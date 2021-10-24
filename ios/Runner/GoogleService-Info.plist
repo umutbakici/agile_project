@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>850019987817-ckrit5liq3ek9o2rtgjqnfuftl7m060n.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.850019987817-ckrit5liq3ek9o2rtgjqnfuftl7m060n</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCFD1MUgo8SJN7OafXNpU0x3p4trWweBqA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>850019987817</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.agileProject</string>
+	<key>PROJECT_ID</key>
+	<string>question-app-480004</string>
+	<key>STORAGE_BUCKET</key>
+	<string>question-app-480004.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:850019987817:ios:50265eb251165594de8df8</string>
+</dict>
+</plist>

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +47,8 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        print('Forgotted Password!');
+                        print(
+                            'Forgotted Password!'); /* TODO: forgot password flow */
                       },
                       child: Text(
                         'Forgot Password?',
@@ -72,6 +72,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: MaterialButton(
                     onPressed: () => print("Successul Login."),
+                    /* TODO: login check */
                     color: Colors.blue,
                     child: Text(
                       'LOGIN',
@@ -101,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        print('Sign Up');
+                        print('Sign Up'); /* TODO: direct to signup */
                       },
                       child: Text('Register Now'),
                     )
