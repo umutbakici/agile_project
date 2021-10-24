@@ -1,10 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import './home.dart';
 
-void main() => runApplication(MaterialApp(
-      routes: {
-        '/': (context) => HomePage(),
-        //'/login': (context) => Login(),
-        //'/signup': (context) => SignUp(),
-      },
-    ));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MaterialApp(
+    routes: {
+      '/': (context) => HomePage(),
+      //'/login': (context) => Login(),
+      //'/signup': (context) => SignUp(),
+    },
+  ));
+}
