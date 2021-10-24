@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                     child: OutlinedButton(
                       onPressed: () {
                         //TODO: LOGIN
-                        //Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, '/login');
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
