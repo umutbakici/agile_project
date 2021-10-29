@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +19,11 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         leading: Container(),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/store');
+              },
+              icon: Icon(Icons.store_outlined)),
           IconButton(
               onPressed: () {
                 //TO DO SETTINGS

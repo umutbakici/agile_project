@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import './home.dart';
+import 'home_screen.dart';
+import 'store/store_screen.dart';
 import './login-signup/login_screen.dart';
 import './login-signup/signup_screen.dart';
 
@@ -9,9 +10,10 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     routes: {
-      '/': (context) => HomePage(),
+      '/': (context) => HomeScreen(),
       '/login': (context) => LoginScreen(),
       '/signup': (context) => SignupScreen(),
+      '/store': (context) => StoreScreen(),
     },
   ));
 }
