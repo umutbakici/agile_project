@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'LOGIN',
+                  'SIGNUP',
                   style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 60.0,
@@ -30,6 +30,17 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
+                  height: 25,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Usrname',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.supervised_user_circle_rounded),
+                  ),
+                ),
+                SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -42,16 +53,28 @@ class LoginScreen extends StatelessWidget {
                     suffixIcon: Icon(Icons.remove_red_eye),
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
+                    suffixIcon: Icon(Icons.remove_red_eye),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
                       onPressed: () {
-                        print(
-                            'Forgotted Password!'); /* TODO: forgot password flow */
+                        Navigator.pushNamed(context, '/login');
                       },
                       child: Text(
-                        'Forgot Password?',
+                        'Already have an account?',
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.4),
                           fontSize: 12.0,
@@ -75,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                     /* TODO: login check */
                     color: Colors.blue,
                     child: Text(
-                      'LOGIN',
+                      'Signup',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -99,10 +122,10 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.black.withOpacity(0.5),
                         fontSize: 16.0,
                       ),
-                    ),  
+                    ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
+                        print('Sign Up'); /* TODO: direct to signup */
                       },
                       child: Text('Register Now'),
                     )
