@@ -84,7 +84,6 @@ class _HomePageState extends State<HomePage> {
                     flex: 1,
                     child: OutlinedButton(
                       onPressed: () {
-                        //TODO: LOGIN
                         Navigator.pushNamed(context, '/login');
                       },
                       child: Padding(

@@ -1,6 +1,18 @@
+import 'package:agile_project/service/auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
+  AuthService _authService = AuthService();
+
+  String _mail;
+  String _password;
+
+  logIn(BuildContext context) {
+    _authService
+        .signIn(_mail, _password)
+        .then((value) => {Navigator.pushNamed(context, '/')});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +35,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
+                  onChanged: (entry) => _mail = entry,
                   decoration: InputDecoration(
                     labelText: 'Email Address',
                     border: OutlineInputBorder(),
@@ -34,6 +47,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 TextFormField(
                   keyboardType: TextInputType.visiblePassword,
+                  onChanged: (entry) => _password = entry,
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'Password',
@@ -71,8 +85,7 @@ class LoginScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: MaterialButton(
-                    onPressed: () => print("Successul Login."),
-                    /* TODO: login check */
+                    onPressed: () => logIn(context),
                     color: Colors.blue,
                     child: Text(
                       'LOGIN',
@@ -99,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.black.withOpacity(0.5),
                         fontSize: 16.0,
                       ),
-                    ),  
+                    ),
                     TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/signup');
