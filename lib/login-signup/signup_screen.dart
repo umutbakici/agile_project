@@ -19,7 +19,7 @@ class SignupState extends State<SignupScreen> {
   var isConfirmPasswordHidden = true;
 
   AuthService _authService = AuthService();
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   SignupState(
       {String mail, String userName, String password, String confirmPassword});
@@ -85,7 +85,7 @@ class SignupState extends State<SignupScreen> {
         child: Center(
           child: SingleChildScrollView(
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: Column(
                 children: [
                   Text(
@@ -198,10 +198,10 @@ class SignupState extends State<SignupScreen> {
                     ),
                     child: MaterialButton(
                       onPressed: () {
-                        if (formKey.currentState.validate()) {
+                        if (_formKey.currentState.validate()) {
                           signUp(context);
                         }
-                      },        
+                      },
                       color: Colors.blue,
                       child: Text(
                         'Signup',
