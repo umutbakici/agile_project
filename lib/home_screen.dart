@@ -89,6 +89,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 1,
                     child: OutlinedButton(
                       onPressed: () {
+                        Navigator.pushNamed(context, '/questions');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          'Questions',
+                          //style:
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Color(0xFF80D8FF),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: OutlinedButton(
+                      onPressed: () {
                         Navigator.pushNamed(context, '/login');
                       },
                       child: Padding(

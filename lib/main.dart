@@ -1,3 +1,4 @@
+import 'package:agile_project/questions/questions_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
@@ -13,8 +14,8 @@ void main() async {
       '/': (context) => HomeScreen(),
       '/login': (context) => LoginScreen(),
       '/signup': (context) => SignupScreen(),
+      '/questions': (context) => QuestionsScreen(),
       '/store': (context) => StoreScreen(),
     },
   ));
 }
-
