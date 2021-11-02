@@ -32,6 +32,8 @@ dependencies:
   firebase_analytics: ^7.0.1
   firebase_auth: ^0.20.1
   cloud_firestore: ^0.16.0+1
+  rflutter_alert: ^1.0.2
+
 
 
 dev_dependencies:
