@@ -8,10 +8,28 @@ class AuthService {
 
   Stream<User> get authStateCbhanges => _auth.authStateChanges();
 
+  Future<List<String>> getUserNames() async {
+    List<String> userNames = [];
+
+    try {
+      await _firestore
+          .collection('users')
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((elm) {
+          userNames.add(elm.data()['user_name']);
+        });
+      });
+      return Future.value(userNames);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   Future<String> signIn(String mail, String password) async {
     try {
-      var user = await _auth.signInWithEmailAndPassword(
-          email: mail, password: password);
+      await _auth.signInWithEmailAndPassword(email: mail, password: password);
       return "Singed in";
     } on FirebaseAuthException catch (e) {
       return e.message;

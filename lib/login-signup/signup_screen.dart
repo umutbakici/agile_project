@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../service/auth.dart';
 
@@ -21,8 +18,12 @@ class SignupState extends State<SignupScreen> {
   AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
+  List userNames;
+
   SignupState(
-      {String mail, String userName, String password, String confirmPassword});
+      {String mail, String userName, String password, String confirmPassword}) {
+    _authService.getUserNames().then((value) => userNames = value);
+  }
 
   signUp(BuildContext context) {
     _authService
@@ -37,6 +38,17 @@ class SignupState extends State<SignupScreen> {
     if (value.length < 6) {
       return "Your user name needs to be at least 6 characters long!";
     }
+
+    bool isNameExists = false;
+    userNames.forEach((userName) {
+      if (value == userName) {
+        isNameExists = true;
+      }
+    });
+    if (isNameExists) {
+      return "Username already exists";
+    }
+
     return null;
   }
 

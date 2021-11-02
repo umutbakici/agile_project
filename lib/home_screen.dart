@@ -67,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 1,
                     child: OutlinedButton(
                       onPressed: () {
-                        //TODO: SIGNUP
                         Navigator.pushNamed(context, '/signup');
                       },
                       child: Padding(
