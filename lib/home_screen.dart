@@ -21,6 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
+                Navigator.pushNamed(context, '/leaderboard');
+              },
+              icon: Icon(Icons.leaderboard_outlined)),
+          IconButton(
+              onPressed: () {
                 Navigator.pushNamed(context, '/store');
               },
               icon: Icon(Icons.store_outlined)),
