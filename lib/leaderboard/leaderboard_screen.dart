@@ -1,4 +1,3 @@
-import 'package:agile_project/leaderboard/leaderboard_listitem.dart';
 import 'package:agile_project/leaderboard/leaderboard_listview.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +8,11 @@ class LeaderboardScreen extends StatefulWidget {
   _LeaderboardScreenState createState() => _LeaderboardScreenState();
 }
 
-bool secondaryColorSelected = false;
+bool secondaryColorSelectedDaily = true;
+bool secondaryColorSelectedWeekly = false;
+bool secondaryColorSelectedMonthly = false;
+
+String leaderboardState = 'daily';
 
 class _LeaderboardScreenState extends State<LeaderboardScreen> {
   @override
@@ -38,19 +41,26 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              myInputChip('Daily', Color(0xFF26C6DA)),
-              myInputChip('Monthly', Color(0xFF26C6DA)),
-              myInputChip('Yearly', Color(0xFF26C6DA)),
+              dailyInputChip('Daily', Color(0xFF26C6DA)),
+              weeklyInputChip('Weekly', Color(0xFF26C6DA)),
+              monthlyInputChip('Monthly', Color(0xFF26C6DA)),
             ],
           ),
-          Expanded(child: LeaderboardListView())
+          Expanded(
+              child: leaderboardState == 'daily'
+                  ? LeaderboardListView()
+                  : leaderboardState == 'weekly'
+                      ? Text('WEEKLY SCORES')
+                      : leaderboardState == 'monthly'
+                          ? Text('MONTHLY SCORES')
+                          : Center())
         ],
       ),
     );
   }
 
-  Widget myInputChip(String title, Color color) {
-    return InputChip(
+  Widget dailyInputChip(String title, Color color) {
+    return ChoiceChip(
       label: Text(title),
       labelStyle: TextStyle(
         color: Colors.white,
@@ -68,15 +78,75 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           style: TextStyle(color: color, fontWeight: FontWeight.bold),
         ),
       ),
-      selected: secondaryColorSelected,
+      selected: secondaryColorSelectedDaily,
       onSelected: (bool selected) {
         setState(() {
-          secondaryColorSelected = selected;
-          if (secondaryColorSelected) {
-            //colors.primaryAppColor = AppColors.secondaryAppColor;
-          } else {
-            //AppColors.primaryAppColor = const Color(0xFF26C6DA);
-          }
+          leaderboardState = 'daily';
+          secondaryColorSelectedDaily = true;
+          secondaryColorSelectedWeekly = false;
+          secondaryColorSelectedMonthly = false;
+        });
+      },
+    );
+  }
+
+  Widget weeklyInputChip(String title, Color color) {
+    return ChoiceChip(
+      label: Text(title),
+      labelStyle: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+      labelPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+      backgroundColor: color.withAlpha(128),
+      selectedColor: color,
+      elevation: 6,
+      shadowColor: color.withAlpha(200),
+      avatar: CircleAvatar(
+        backgroundColor: Colors.white70,
+        child: Text(
+          title[0].toUpperCase(),
+          style: TextStyle(color: color, fontWeight: FontWeight.bold),
+        ),
+      ),
+      selected: secondaryColorSelectedWeekly,
+      onSelected: (bool selected) {
+        setState(() {
+          leaderboardState = 'weekly';
+          secondaryColorSelectedWeekly = true;
+          secondaryColorSelectedDaily = false;
+          secondaryColorSelectedMonthly = false;
+        });
+      },
+    );
+  }
+
+  Widget monthlyInputChip(String title, Color color) {
+    return ChoiceChip(
+      label: Text(title),
+      labelStyle: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+      labelPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+      backgroundColor: color.withAlpha(128),
+      selectedColor: color,
+      elevation: 6,
+      shadowColor: color.withAlpha(200),
+      avatar: CircleAvatar(
+        backgroundColor: Colors.white70,
+        child: Text(
+          title[0].toUpperCase(),
+          style: TextStyle(color: color, fontWeight: FontWeight.bold),
+        ),
+      ),
+      selected: secondaryColorSelectedMonthly,
+      onSelected: (bool selected) {
+        setState(() {
+          leaderboardState = 'monthly';
+          secondaryColorSelectedMonthly = true;
+          secondaryColorSelectedWeekly = false;
+          secondaryColorSelectedDaily = false;
         });
       },
     );
