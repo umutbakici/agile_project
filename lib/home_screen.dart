@@ -19,11 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         leading: Container(),
         actions: [
+          /*
           IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/leaderboard');
               },
               icon: Icon(Icons.leaderboard_outlined)),
+              */
           IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/store');

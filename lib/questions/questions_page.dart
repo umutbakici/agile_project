@@ -51,10 +51,22 @@ class _QuizPageState extends State<QuizPage> {
           buttons: [
             DialogButton(
               child: Text(
-                "Cancel",
+                "Play again",
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
               onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+              width: 120,
+            ),
+            DialogButton(
+              child: Text(
+                "Leaderboard",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamed("/leaderboard");
+                //Navigator.pushNamed(context, '/leaderboard');
+              },
               width: 120,
             )
           ],

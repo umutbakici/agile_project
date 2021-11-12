@@ -34,7 +34,7 @@ class _LeaderboardListViewWeeklyState extends State<LeaderboardListViewWeekly> {
                         Spacer(flex: 5),
                         OutlinedButton(
                             onPressed: () {
-                              Navigator.of(context).pushNamed('/');
+                              Navigator.of(context).pushNamed('/leaderboard');
                             },
                             child: Text('CHALLENGE!',
                                 style: TextStyle(
