@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+
+import 'models/app_state.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -65,6 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 256,
                 )),
             Spacer(),
+            StoreConnector<AppState, String>(
+                builder: (context, name) {
+                  return Text(name);
+                },
+                converter: (store) => store.state.username),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
