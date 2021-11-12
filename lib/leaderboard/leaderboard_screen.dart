@@ -1,4 +1,6 @@
-import 'package:agile_project/leaderboard/leaderboard_listview.dart';
+import 'package:agile_project/leaderboard/daily_leaderboard_listview.dart';
+import 'package:agile_project/leaderboard/monthly_leaderboard_listview.dart';
+import 'package:agile_project/leaderboard/weekly_leaderboard_listview.dart';
 import 'package:flutter/material.dart';
 
 class LeaderboardScreen extends StatefulWidget {
@@ -21,7 +23,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       appBar: AppBar(
         title: Text(
           'LEADERBOARD',
-          //style:
         ),
         backgroundColor: Color(0xFF80D8FF),
         centerTitle: true,
@@ -48,11 +49,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           ),
           Expanded(
               child: leaderboardState == 'daily'
-                  ? LeaderboardListView()
+                  ? LeaderboardListViewDaily()
                   : leaderboardState == 'weekly'
-                      ? Text('WEEKLY SCORES')
+                      ? LeaderboardListViewWeekly()
                       : leaderboardState == 'monthly'
-                          ? Text('MONTHLY SCORES')
+                          ? LeaderboardListViewMonthly()
                           : Center())
         ],
       ),
