@@ -17,7 +17,12 @@ class SignInState extends State<LoginScreen> {
   logIn(BuildContext context) {
     _authService
         .signIn(_mail, _password)
-        .then((value) => {Navigator.pushNamed(context, '/')})
+        .then((value) => {
+              if (value == "Singed in")
+                Navigator.pushNamed(context, '/')
+              else
+                print("Login failed")
+            })
         .catchError((e) {});
   }
 

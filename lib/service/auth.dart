@@ -6,8 +6,6 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Stream<User> get authStateCbhanges => _auth.authStateChanges();
-
   Future<List<String>> getUserNames() async {
     List<String> userNames = [];
 
@@ -44,9 +42,12 @@ class AuthService {
     try {
       var user = await _auth.createUserWithEmailAndPassword(
           email: mail, password: password);
-      _firestore.collection("users").doc(user.user.uid).set({
+      _firestore.collection("users").doc(userName).set({
         "mail": mail,
         "user_name": userName,
+        "gold": 0,
+        "level": 1,
+        "XP": 0
       });
       return "Signed up.";
     } on FirebaseAuthException catch (e) {
