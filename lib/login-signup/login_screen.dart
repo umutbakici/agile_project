@@ -1,5 +1,8 @@
+import 'package:agile_project/models/app_state.dart';
+import 'package:agile_project/reducers/actions.dart';
 import 'package:agile_project/service/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class LoginScreen extends StatefulWidget {
   SignInState createState() => SignInState();
@@ -19,7 +22,7 @@ class SignInState extends State<LoginScreen> {
         .signIn(_mail, _password)
         .then((value) => {
               if (value == "Singed in")
-                Navigator.pushNamed(context, '/')
+                {Navigator.pushNamed(context, '/landing')}
               else
                 print("Login failed")
             })
@@ -125,21 +128,29 @@ class SignInState extends State<LoginScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: MaterialButton(
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          logIn(context);
-                        }
-                      },
-                      color: Colors.blue,
-                      child: Text(
-                        'LOGIN',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    child: StoreConnector<AppState, VoidCallback>(
+                        converter: (store) {
+                          return () =>
+                              store.dispatch(SetCurrentUserAction("hey"));
+                        },
+                        builder: (context, callback) => MaterialButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  try {
+                                    logIn(context);
+                                    callback();
+                                  } catch (e) {}
+                                }
+                              },
+                              color: Colors.blue,
+                              child: Text(
+                                'LOGIN',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
                   ),
                   SizedBox(
                     height: 30,

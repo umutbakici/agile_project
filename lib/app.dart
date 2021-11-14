@@ -1,3 +1,4 @@
+import 'package:agile_project/landingpage/landing_page.dart';
 import 'package:agile_project/questions/questions_page.dart';
 import 'package:flutter/material.dart';
 import 'models/app_state.dart';
@@ -26,6 +27,7 @@ class ReduxApp extends StatelessWidget {
           '/questions': (context) => QuestionsScreen(),
           '/store': (context) => StoreScreen(),
           '/leaderboard': (context) => LeaderboardScreen(),
+          '/landing': (context) => LandingPage(),
         },
       ),
     );

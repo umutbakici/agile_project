@@ -28,7 +28,7 @@ class SignupState extends State<SignupScreen> {
   signUp(BuildContext context) {
     _authService
         .signUp(mail, password, userName)
-        .then((value) => Navigator.pushNamed(context, "/"));
+        .then((value) => Navigator.pushNamed(context, "/landing"));
   }
 
   String handleUserName(String value) {
