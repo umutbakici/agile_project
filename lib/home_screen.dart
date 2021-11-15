@@ -29,11 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               icon: Icon(Icons.leaderboard_outlined)),
               */
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/store');
-              },
-              icon: Icon(Icons.store_outlined)),
+
           IconButton(
               onPressed: () {
                 //TO DO SETTINGS
