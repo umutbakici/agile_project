@@ -1,5 +1,6 @@
 import 'package:agile_project/models/app_state.dart';
 import 'package:agile_project/reducers/actions.dart';
+import 'package:agile_project/reducers/middlewares.dart';
 import 'package:agile_project/service/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -130,8 +131,8 @@ class SignInState extends State<LoginScreen> {
                     ),
                     child: StoreConnector<AppState, VoidCallback>(
                         converter: (store) {
-                          return () =>
-                              store.dispatch(SetCurrentUserAction("hey"));
+                          return () => store
+                              .dispatch(getUserDataFromFirebase("tuvangezer"));
                         },
                         builder: (context, callback) => MaterialButton(
                               onPressed: () {
