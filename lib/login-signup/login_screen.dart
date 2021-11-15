@@ -105,11 +105,10 @@ class SignInState extends State<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          print(
-                              'Forgotted Password!'); /* TODO: forgot password flow */
+                          Navigator.pushNamed(context, '/forgotPassword');
                         },
                         child: Text(
-                          'Forgot Password?',
+                          'Forgot password?',
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.4),
                             fontSize: 12.0,
