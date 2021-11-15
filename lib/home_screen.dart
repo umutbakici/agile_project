@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, name) {
                   return Text(name);
                 },
-                converter: (store) => store.state.username),
+                converter: (store) => store.state.user.toString()),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),

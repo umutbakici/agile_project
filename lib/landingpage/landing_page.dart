@@ -56,17 +56,24 @@ class _LandingPageState extends State<LandingPage> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("My Username"),
+                      StoreConnector<AppState, String>(
+                          builder: (context, name) {
+                            return Text(name);
+                          },
+                          converter: (store) => store.state.user.username),
                       SizedBox(
                           width: 100,
                           height: 40,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Level: 10",
-                                  textAlign: TextAlign.left,
-                                ),
+                                StoreConnector<AppState, String>(
+                                    builder: (context, lvl) {
+                                      return Text("Level: $lvl",
+                                          textAlign: TextAlign.left);
+                                    },
+                                    converter: (store) =>
+                                        store.state.user.level.toString()),
                                 SizedBox(
                                   height: 5,
                                 ),
