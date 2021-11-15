@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,11 +11,20 @@ class QuestionsController extends GetxController {
   final _questionsList = [].obs;
   final isLoading = true.obs;
   final firestore = FirebaseFirestore.instance;
+  final timeEnded = false.obs;
+
+  Timer _timer;
 
   onInit() async {
     await fetchData();
     isLoading.value = false;
     super.onInit();
+    initializeTimer();
+  }
+
+  void initializeTimer() {
+    _timer =
+        Timer.periodic(const Duration(minutes: 1), (_) => timeEndedMethod());
   }
 
   Future<void> fetchData() async {
@@ -81,6 +91,11 @@ class QuestionsController extends GetxController {
 
   void reset() {
     _questionNumber = 0;
+    _timer.cancel();
     fetchData();
+  }
+
+  timeEndedMethod() {
+    timeEnded.value = true;
   }
 }

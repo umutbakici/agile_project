@@ -39,41 +39,53 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  Future<bool> showAlert() {
+    return Alert(
+      context: context,
+      title: 'Finished!',
+      desc: 'You\'ve reached the end of the quiz.',
+      buttons: [
+        DialogButton(
+          child: Text(
+            "Play again",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            widget.controller.initializeTimer();
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+          width: 120,
+        ),
+        DialogButton(
+          child: Text(
+            "Leaderboard",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true)
+                .pushNamed("/leaderboard");
+            //Navigator.pushNamed(context, '/leaderboard');
+          },
+          width: 120,
+        )
+      ],
+    ).show();
+  }
+
+  Future<bool> finish() {
+    widget.controller.reset();
+    scoreKeeper = [];
+    widget.controller.timeEnded.value = false;
+    return showAlert();
+  }
+
   void checkAnswer(String userPickedAnswer) {
     String correctAnswer = widget.controller.getCorrectAnswer();
 
     setState(() {
-      if (widget.controller.isFinished() == true) {
-        Alert(
-          context: context,
-          title: 'Finished!',
-          desc: 'You\'ve reached the end of the quiz.',
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Play again",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-              width: 120,
-            ),
-            DialogButton(
-              child: Text(
-                "Leaderboard",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true)
-                    .pushNamed("/leaderboard");
-                //Navigator.pushNamed(context, '/leaderboard');
-              },
-              width: 120,
-            )
-          ],
-        ).show();
-
+      if (widget.controller.isFinished()) {
+        showAlert();
         widget.controller.reset();
-
         scoreKeeper = [];
       } else {
         if (userPickedAnswer == correctAnswer) {
@@ -95,6 +107,9 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      if (widget.controller.timeEnded.value) {
+        Future.delayed(Duration.zero, () => finish());
+      }
       return widget.controller.isLoading.value
           ? Center(
               child: AnimatedOpacity(
