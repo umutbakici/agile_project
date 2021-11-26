@@ -213,8 +213,8 @@ class SignupState extends State<SignupScreen> {
                     ),
                     child: StoreConnector<AppState, VoidCallback>(
                         converter: (store) {
-                          return () => store
-                              .dispatch(getUserDataFromFirebase("tuvangezer"));
+                          return () =>
+                              store.dispatch(getUserDataFromFirebase(mail));
                         },
                         builder: (context, callback) => MaterialButton(
                               onPressed: () {
