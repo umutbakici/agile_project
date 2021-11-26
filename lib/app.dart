@@ -5,6 +5,7 @@ import 'models/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'home_screen.dart';
 import 'leaderboard/leaderboard_screen.dart';
+import 'category/category_screen.dart';
 import 'store/store_screen.dart';
 import './login-signup/login_screen.dart';
 import 'package:redux/redux.dart';
@@ -27,6 +28,7 @@ class ReduxApp extends StatelessWidget {
           '/questions': (context) => QuestionsScreen(),
           '/store': (context) => StoreScreen(),
           '/leaderboard': (context) => LeaderboardScreen(),
+          '/category': (context) => CategoryScreen(),
           '/landing': (context) => LandingPage(),
         },
       ),
