@@ -78,10 +78,15 @@ class _LandingPageState extends State<LandingPage> {
                                 SizedBox(
                                   height: 5,
                                 ),
-                                LinearProgressIndicator(
-                                  value: 0.3,
-                                  color: Color.fromRGBO(0, 0, 0, 1),
-                                )
+                                StoreConnector<AppState, User>(
+                                    builder: (context, user) {
+                                      return LinearProgressIndicator(
+                                        value: user.XP / 300.0,
+                                        color: Color.fromRGBO(0, 0, 0, 1),
+                                      );
+                                    },
+                                    converter: (store) =>
+                                        store.state.user ?? User()),
                               ]))
                     ])),
           ),
