@@ -24,11 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/category');
-              },
-              icon: Icon(Icons.category_outlined)),
-          IconButton(
-              onPressed: () {
                 //TO DO SETTINGS
                 //Navigator.pushNamed(context, '/settings');
               },
