@@ -70,7 +70,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/landing');
                 },
                 icon: Icon(Icons.home)),
           ],
