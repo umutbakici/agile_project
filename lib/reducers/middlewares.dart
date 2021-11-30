@@ -30,10 +30,11 @@ ThunkAction<AppState> setInventoryItemCount(String item, int count) {
 
 ThunkAction<AppState> addXP(int xp) {
   return (Store<AppState> store) async {
-    final User u = store.state.user.copyWith(XP: store.state.user.XP + xp);
     final int finalXP = (xp + store.state.user.XP) % 100;
     final int lvlDelta = (xp + store.state.user.XP) ~/ 100;
 
+    final User u = store.state.user
+        .copyWith(XP: finalXP, level: store.state.user.level + lvlDelta);
     await FirebaseFirestore.instance
         .collection("users")
         .doc(store.state.user.username)
