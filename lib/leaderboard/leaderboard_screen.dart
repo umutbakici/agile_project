@@ -31,7 +31,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/landing');
               },
               icon: Icon(Icons.home)),
         ],

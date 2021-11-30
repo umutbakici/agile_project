@@ -61,11 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 256,
                 )),
             Spacer(),
-            StoreConnector<AppState, String>(
-                builder: (context, name) {
-                  return Text(name);
-                },
-                converter: (store) => store.state.user.toString()),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
@@ -81,27 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 12.0),
                         child: Text(
                           'Signup',
-                          //style:
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0xFF80D8FF),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/questions');
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          'Questions',
                           //style:
                         ),
                       ),

@@ -27,3 +27,14 @@ ThunkAction<AppState> setInventoryItemCount(String item, int count) {
         .update({'inventory.$item': count});
   };
 }
+
+ThunkAction<AppState> addXP(int xp) {
+  return (Store<AppState> store) async {
+    final User u = store.state.user.copyWith(XP: store.state.user.XP + xp);
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(store.state.user.username)
+        .update({'XP': FieldValue.increment(xp)});
+    store.dispatch(new UserLoadedAction(u));
+  };
+}

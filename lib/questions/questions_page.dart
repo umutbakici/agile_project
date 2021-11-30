@@ -1,10 +1,12 @@
 import 'package:agile_project/questions/questions_controller.dart';
+import 'package:agile_project/reducers/middlewares.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:agile_project/models/app_state.dart' as aps;
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class QuestionsScreen extends GetView<QuestionsController> {
@@ -40,12 +42,15 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+  List<int> scoreList = [];
 
   void checkAnswer(String userPickedAnswer) {
     String correctAnswer = widget.controller.getCorrectAnswer();
 
     setState(() {
       if (widget.controller.isFinished() == true) {
+        aps.store.dispatch(addXP(scoreList.reduce((a, b) => a + b)));
+        print(scoreList.reduce((a, b) => a + b));
         Navigator.of(context, rootNavigator: true).pushNamed("/leaderboard");
 /*
         Alert(
@@ -85,11 +90,13 @@ class _QuizPageState extends State<QuizPage> {
             Icons.check,
             color: Colors.green,
           ));
+          scoreList.add(1);
         } else {
           scoreKeeper.add(Icon(
             Icons.close,
             color: Colors.red,
           ));
+          scoreList.add(0);
         }
         widget.controller.nextQuestion();
       }
