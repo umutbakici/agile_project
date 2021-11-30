@@ -254,7 +254,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(width: 5),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/leaderboard');
+                },
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
