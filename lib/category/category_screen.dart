@@ -16,8 +16,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return snapshot.data.docs.map<Widget>((document) {
       if (!lastCategory.contains(document.get('category'))) {
         lastCategory.add(document.get('category'));
-        //print("lastcategory ${lastCategory}");
-        //print("last ${lastCategory.last}");
       }
     }).toList();
   }
@@ -41,7 +39,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         Spacer(flex: 5),
                         OutlinedButton(
                             onPressed: () {
-                              //Navigator.of(context).pushNamed('/');
+                              Navigator.of(context).pushNamed('/questions',
+                                  arguments: e.toString());
                               print("clicked ${e.toString()}");
                             },
                             child: Text('PLAY',
