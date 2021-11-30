@@ -30,7 +30,7 @@ class _StoreScreenState extends State<StoreScreen> {
               converter: (store) => store.state.user.gold.toString()),
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/landing');
               },
               icon: Icon(Icons.home)),
         ],
