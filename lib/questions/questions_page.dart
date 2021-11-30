@@ -1,4 +1,5 @@
 import 'package:agile_project/questions/questions_controller.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:agile_project/reducers/middlewares.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:agile_project/models/app_state.dart' as aps;
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class QuestionsScreen extends GetView<QuestionsController> {
   @override
@@ -48,11 +48,34 @@ class _QuizPageState extends State<QuizPage> {
     String correctAnswer = widget.controller.getCorrectAnswer();
 
     setState(() {
-      if (widget.controller.isFinished() == true) {
+      if (widget.controller.areQuestionsFinished()) {
+        //showAlert();
         aps.store.dispatch(addXP(scoreList.reduce((a, b) => a + b)));
         print(scoreList.reduce((a, b) => a + b));
-        Navigator.of(context, rootNavigator: true).pushNamed("/leaderboard");
-/*
+        widget.controller.reset();
+        scoreKeeper = [];
+        Navigator.of(context, rootNavigator: true)
+            .popAndPushNamed("/leaderboard");
+      } else {
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+          scoreList.add(1);
+          widget.controller.addTime();
+        } else {
+          scoreKeeper.add(Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+          scoreList.add(0);
+        }
+        widget.controller.nextQuestion();
+      }
+    });
+
+    /*
         Alert(
           context: context,
           title: 'Finished!',
@@ -80,32 +103,14 @@ class _QuizPageState extends State<QuizPage> {
           ],
         ).show();
 */
-
-        widget.controller.reset();
-
-        scoreKeeper = [];
-      } else {
-        if (userPickedAnswer == correctAnswer) {
-          scoreKeeper.add(Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-          scoreList.add(1);
-        } else {
-          scoreKeeper.add(Icon(
-            Icons.close,
-            color: Colors.red,
-          ));
-          scoreList.add(0);
-        }
-        widget.controller.nextQuestion();
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      /*if (widget.controller.timeEnded.value) {
+        Future.delayed(Duration.zero, () => finish());
+      }*/
       return widget.controller.isLoading.value
           ? Center(
               child: AnimatedOpacity(
@@ -114,41 +119,80 @@ class _QuizPageState extends State<QuizPage> {
                 child: CircularProgressIndicator.adaptive(),
               ),
             )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Center(
-                      child: Text(
-                        widget.controller.getQuestionText(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.white,
+          : Stack(children: [
+              Obx(() {
+                return CircularCountDownTimer(
+                  duration: 60,
+                  initialDuration: 0,
+                  controller: widget.controller.countDownController.value,
+                  width: 50,
+                  height: 50,
+                  ringColor: Colors.grey[300],
+                  ringGradient: null,
+                  fillColor: Colors.purpleAccent[100],
+                  fillGradient: null,
+                  backgroundColor: Colors.purple[500],
+                  backgroundGradient: null,
+                  strokeWidth: 20.0,
+                  strokeCap: StrokeCap.round,
+                  textStyle: TextStyle(
+                      fontSize: 33.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  textFormat: CountdownTextFormat.S,
+                  isReverse: true,
+                  isReverseAnimation: false,
+                  isTimerTextShown: true,
+                  autoStart: true,
+                  onStart: () {
+                    print('Countdown Started');
+                  },
+                  onComplete: () {
+                    print('Countdown Ended');
+                    widget.controller.timeEnded.value = true;
+                    widget.controller.reset();
+                    scoreKeeper = [];
+                    Navigator.of(context, rootNavigator: true)
+                        .popAndPushNamed("/leaderboard");
+                  },
+                );
+              }),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Center(
+                        child: Text(
+                          widget.controller.getQuestionText(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: Obx(() {
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 40),
-                        child: Column(
-                          children: returnExpandedWidgets(widget.controller),
-                        ),
-                      );
-                    })),
-                Row(
-                  children: scoreKeeper,
-                )
-              ],
-            );
+                  Expanded(
+                      flex: 1,
+                      child: Obx(() {
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 40),
+                          child: Column(
+                            children: returnExpandedWidgets(widget.controller),
+                          ),
+                        );
+                      })),
+                  Row(
+                    children: scoreKeeper,
+                  )
+                ],
+              ),
+            ]);
     });
   }
 

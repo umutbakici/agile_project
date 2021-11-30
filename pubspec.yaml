@@ -36,6 +36,7 @@ dependencies:
   get: ^4.3.8
   flutter_redux: ^0.8.2
   redux_thunk:
+  circular_countdown_timer: ^0.2.0
 
 
 dev_dependencies:

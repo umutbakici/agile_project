@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
 class QuestionsController extends GetxController {
   final int numberOfChoices = 4;
@@ -12,7 +14,10 @@ class QuestionsController extends GetxController {
   final firestore = FirebaseFirestore.instance;
   final category;
 
+  final countDownController = CountDownController().obs;
+
   QuestionsController(this.category);
+  final timeEnded = false.obs;
 
   onInit() async {
     await fetchData();
@@ -80,7 +85,7 @@ class QuestionsController extends GetxController {
     return tempList;
   }
 
-  bool isFinished() {
+  bool areQuestionsFinished() {
     if (_questionNumber >= _questionsList.value.length - 1) {
       print('Now returning true');
       return true;
@@ -92,6 +97,13 @@ class QuestionsController extends GetxController {
   void reset() {
     Get.deleteAll(); //Deletes all Instances Data
     _questionNumber = 0;
+    countDownController.value.restart();
+    timeEnded.value = false;
     //fetchData();
+  }
+
+  void addTime() {
+    countDownController.value
+        .restart(duration: int.parse(countDownController.value.getTime()) + 5);
   }
 }
