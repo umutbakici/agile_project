@@ -32,7 +32,6 @@ ThunkAction<AppState> addXP(int xp) {
   return (Store<AppState> store) async {
     final int finalXP = (xp + store.state.user.XP) % 100;
     final int lvlDelta = (xp + store.state.user.XP) ~/ 100;
-
     final User u = store.state.user
         .copyWith(XP: finalXP, level: store.state.user.level + lvlDelta);
     await FirebaseFirestore.instance

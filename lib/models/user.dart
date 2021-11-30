@@ -28,7 +28,7 @@ class User {
         username: username ?? this.username,
         mail: mail ?? this.mail,
         gold: username ?? this.gold,
-        level: username ?? this.level,
+        level: level ?? this.level,
         inventory: inventory ?? this.inventory,
         XP: XP ?? this.XP);
   }
