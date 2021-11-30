@@ -11,7 +11,5 @@ import 'app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final store = Store<AppState>(appReducer,
-      initialState: AppState(), middleware: [thunkMiddleware]);
   runApp(ReduxApp(store: store));
 }
