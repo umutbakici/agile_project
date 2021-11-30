@@ -9,10 +9,12 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 class QuestionsScreen extends GetView<QuestionsController> {
   @override
-  final QuestionsController controller = Get.put(QuestionsController());
-
-  @override
   Widget build(BuildContext context) {
+    @override
+    final String category = ModalRoute.of(context).settings.arguments;
+    final QuestionsController controller =
+        Get.put(QuestionsController(category));
+
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
@@ -44,6 +46,8 @@ class _QuizPageState extends State<QuizPage> {
 
     setState(() {
       if (widget.controller.isFinished() == true) {
+        Navigator.of(context, rootNavigator: true).pushNamed("/leaderboard");
+/*
         Alert(
           context: context,
           title: 'Finished!',
@@ -65,12 +69,12 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 Navigator.of(context, rootNavigator: true)
                     .pushNamed("/leaderboard");
-                //Navigator.pushNamed(context, '/leaderboard');
               },
               width: 120,
             )
           ],
         ).show();
+*/
 
         widget.controller.reset();
 

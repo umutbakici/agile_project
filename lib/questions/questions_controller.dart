@@ -10,6 +10,9 @@ class QuestionsController extends GetxController {
   final _questionsList = [].obs;
   final isLoading = true.obs;
   final firestore = FirebaseFirestore.instance;
+  final category;
+
+  QuestionsController(this.category);
 
   onInit() async {
     await fetchData();
@@ -21,7 +24,14 @@ class QuestionsController extends GetxController {
     QuerySnapshot collectionSnapshot;
     List tempList = [];
     try {
-      collectionSnapshot = await firestore.collection("questions").get();
+      if (category == null) {
+        collectionSnapshot = await firestore.collection("questions").get();
+      } else {
+        collectionSnapshot = await firestore
+            .collection("questions")
+            .where("category", isEqualTo: category)
+            .get();
+      }
       tempList = collectionSnapshot.docs;
       trimList(tempList);
     } catch (e) {
@@ -80,7 +90,8 @@ class QuestionsController extends GetxController {
   }
 
   void reset() {
+    Get.deleteAll(); //Deletes all Instances Data
     _questionNumber = 0;
-    fetchData();
+    //fetchData();
   }
 }
