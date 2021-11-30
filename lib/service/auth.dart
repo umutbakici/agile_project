@@ -48,7 +48,8 @@ class AuthService {
         "user_name": userName,
         "gold": 0,
         "level": 1,
-        "XP": 0
+        "XP": 0,
+        "inventory": {"50/50": 5, "pass": 10}
       });
       return "Signed up.";
     } on FirebaseAuthException catch (e) {
@@ -57,7 +58,6 @@ class AuthService {
   }
 
   Future<au.User> getUserWithName(String uname) async {
-    print("aaaaaaaaaaaaaaaaaaaaaaaa");
     return await _firestore
         .collection("users")
         .doc(uname)
@@ -69,7 +69,31 @@ class AuthService {
             XP: ds.data()["XP"],
             gold: ds.data()["gold"],
             level: ds.data()["level"],
-            mail: ds.data()["mail"]);
+            mail: ds.data()["mail"],
+            inventory: ds.data()["inventory"]);
+        print("authservice: ${u.toString()}");
+        return u;
+      }
+      return au.User();
+    });
+  }
+
+  Future<au.User> getUserWithEmail(String email) async {
+    return await _firestore
+        .collection("users")
+        .where('mail', isEqualTo: email)
+        .limit(1)
+        .get()
+        .then((QuerySnapshot qs) {
+      final DocumentSnapshot ds = qs.docs.first;
+      if (ds.exists) {
+        au.User u = au.User(
+            username: ds.data()["user_name"],
+            XP: ds.data()["XP"],
+            gold: ds.data()["gold"],
+            level: ds.data()["level"],
+            mail: ds.data()["mail"],
+            inventory: ds.data()["inventory"]);
         print("authservice: ${u.toString()}");
         return u;
       }

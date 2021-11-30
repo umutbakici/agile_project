@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:agile_project/models/app_state.dart';
+import 'package:agile_project/models/user.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -56,24 +57,24 @@ class _LandingPageState extends State<LandingPage> {
                       SizedBox(
                         width: 10,
                       ),
-                      StoreConnector<AppState, String>(
+                      StoreConnector<AppState, User>(
                           builder: (context, name) {
-                            return Text(name);
+                            return Text(name.username);
                           },
-                          converter: (store) => store.state.user.username),
+                          converter: (store) => store.state.user ?? User()),
                       SizedBox(
                           width: 100,
                           height: 40,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                StoreConnector<AppState, String>(
-                                    builder: (context, lvl) {
-                                      return Text("Level: $lvl",
+                                StoreConnector<AppState, User>(
+                                    builder: (context, user) {
+                                      return Text("Level: ${user.level}",
                                           textAlign: TextAlign.left);
                                     },
                                     converter: (store) =>
-                                        store.state.user.level.toString()),
+                                        store.state.user ?? User()),
                                 SizedBox(
                                   height: 5,
                                 ),

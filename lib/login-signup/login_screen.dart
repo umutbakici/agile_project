@@ -106,11 +106,10 @@ class SignInState extends State<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          print(
-                              'Forgotted Password!'); /* TODO: forgot password flow */
+                          Navigator.pushNamed(context, '/forgotPassword');
                         },
                         child: Text(
-                          'Forgot Password?',
+                          'Forgot password?',
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.4),
                             fontSize: 12.0,
@@ -131,8 +130,8 @@ class SignInState extends State<LoginScreen> {
                     ),
                     child: StoreConnector<AppState, VoidCallback>(
                         converter: (store) {
-                          return () => store
-                              .dispatch(getUserDataFromFirebase("tuvangezer"));
+                          return () =>
+                              store.dispatch(getUserDataFromFirebase(_mail));
                         },
                         builder: (context, callback) => MaterialButton(
                               onPressed: () {

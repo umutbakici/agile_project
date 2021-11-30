@@ -22,14 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0.0,
         leading: Container(),
         actions: [
-          /*
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/leaderboard');
+                Navigator.pushNamed(context, '/category');
               },
-              icon: Icon(Icons.leaderboard_outlined)),
-              */
-
+              icon: Icon(Icons.category_outlined)),
           IconButton(
               onPressed: () {
                 //TO DO SETTINGS

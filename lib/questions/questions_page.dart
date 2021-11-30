@@ -5,14 +5,15 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class QuestionsScreen extends GetView<QuestionsController> {
   @override
-  final QuestionsController controller = Get.put(QuestionsController());
-
-  @override
   Widget build(BuildContext context) {
+    @override
+    final String category = ModalRoute.of(context).settings.arguments;
+    final QuestionsController controller =
+        Get.put(QuestionsController(category));
+
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
@@ -39,44 +40,46 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  Future<bool> showAlert() {
-    return Alert(
-      context: context,
-      title: 'Finished!',
-      desc: 'You\'ve reached the end of the quiz.',
-      buttons: [
-        DialogButton(
-          child: Text(
-            "Play again",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            widget.controller.initializeTimer();
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-          width: 120,
-        ),
-        DialogButton(
-          child: Text(
-            "Leaderboard",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true)
-                .pushNamed("/leaderboard");
-            //Navigator.pushNamed(context, '/leaderboard');
-          },
-          width: 120,
-        )
-      ],
-    ).show();
-  }
+  void checkAnswer(String userPickedAnswer) {
+    String correctAnswer = widget.controller.getCorrectAnswer();
+
+    setState(() {
+      if (widget.controller.isFinished() == true) {
+        Navigator.of(context, rootNavigator: true).pushNamed("/leaderboard");
+/*
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Play again",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+              width: 120,
+            ),
+            DialogButton(
+              child: Text(
+                "Leaderboard",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamed("/leaderboard");
+              },
+              width: 120,
+            )
+          ],
+        ).show();
+*/
 
   Future<bool> finish() {
     widget.controller.reset();
     scoreKeeper = [];
     widget.controller.timeEnded.value = false;
-    return showAlert();
+    //return showAlert();
   }
 
   void checkAnswer(String userPickedAnswer) {
@@ -84,7 +87,7 @@ class _QuizPageState extends State<QuizPage> {
 
     setState(() {
       if (widget.controller.isFinished()) {
-        showAlert();
+        //showAlert();
         widget.controller.reset();
         scoreKeeper = [];
       } else {

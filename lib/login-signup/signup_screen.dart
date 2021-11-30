@@ -1,4 +1,7 @@
+import 'package:agile_project/models/app_state.dart';
+import 'package:agile_project/reducers/middlewares.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import '../service/auth.dart';
 
@@ -208,21 +211,29 @@ class SignupState extends State<SignupScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: MaterialButton(
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          signUp(context);
-                        }
-                      },
-                      color: Colors.blue,
-                      child: Text(
-                        'Signup',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    child: StoreConnector<AppState, VoidCallback>(
+                        converter: (store) {
+                          return () =>
+                              store.dispatch(getUserDataFromFirebase(mail));
+                        },
+                        builder: (context, callback) => MaterialButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  try {
+                                    signUp(context);
+                                    callback();
+                                  } catch (e) {}
+                                }
+                              },
+                              color: Colors.blue,
+                              child: Text(
+                                'Signup',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
                   ),
                   SizedBox(
                     height: 30,
