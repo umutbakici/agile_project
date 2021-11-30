@@ -1,6 +1,7 @@
 import 'package:agile_project/landingpage/landing_page.dart';
 import 'package:agile_project/questions/questions_page.dart';
 import 'package:flutter/material.dart';
+import 'landingpage/forgot_password_page.dart';
 import 'models/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'home_screen.dart';
@@ -30,6 +31,7 @@ class ReduxApp extends StatelessWidget {
           '/leaderboard': (context) => LeaderboardScreen(),
           '/category': (context) => CategoryScreen(),
           '/landing': (context) => LandingPage(),
+          '/forgotPassword': (context) => ForgotPasswordScreen(),
         },
       ),
     );
