@@ -12,7 +12,7 @@ class QuestionsController extends GetxController {
   final _questionsList = [].obs;
   final isLoading = true.obs;
   final firestore = FirebaseFirestore.instance;
-  final category;
+  String category = '';
 
   final countDownController = CountDownController().obs;
 

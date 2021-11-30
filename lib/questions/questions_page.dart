@@ -157,41 +157,44 @@ class _QuizPageState extends State<QuizPage> {
                   },
                 );
               }),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Center(
-                        child: Text(
-                          widget.controller.getQuestionText(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            color: Colors.white,
+              Obx(() {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Center(
+                          child: Text(
+                            widget.controller.getQuestionText(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                      flex: 1,
-                      child: Obx(() {
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 40),
-                          child: Column(
-                            children: returnExpandedWidgets(widget.controller),
-                          ),
-                        );
-                      })),
-                  Row(
-                    children: scoreKeeper,
-                  )
-                ],
-              ),
+                    Expanded(
+                        flex: 1,
+                        child: Obx(() {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 40),
+                            child: Column(
+                              children:
+                                  returnExpandedWidgets(widget.controller),
+                            ),
+                          );
+                        })),
+                    Row(
+                      children: scoreKeeper,
+                    )
+                  ],
+                );
+              })
             ]);
     });
   }
