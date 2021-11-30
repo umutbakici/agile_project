@@ -106,4 +106,8 @@ class QuestionsController extends GetxController {
     countDownController.value
         .restart(duration: int.parse(countDownController.value.getTime()) + 5);
   }
+
+  int getTime() {
+    return int.parse(countDownController.value.getTime());
+  }
 }

@@ -50,8 +50,10 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       if (widget.controller.areQuestionsFinished()) {
         //showAlert();
-        aps.store.dispatch(addXP(scoreList.reduce((a, b) => a + b)));
-        print(scoreList.reduce((a, b) => a + b));
+        final int xpToAdd = scoreList.reduce((a, b) => a + b) * 10 +
+            widget.controller.getTime();
+        aps.store.dispatch(addXP(xpToAdd));
+        print(widget.controller.getTime());
         widget.controller.reset();
         scoreKeeper = [];
         Navigator.of(context, rootNavigator: true)
