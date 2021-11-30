@@ -51,8 +51,13 @@ class _LandingPageState extends State<LandingPage> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CircleAvatar(
-                        radius: 20,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/profile');
+                        },
+                        child: CircleAvatar(
+                          radius: 20,
+                        ),
                       ),
                       SizedBox(
                         width: 10,

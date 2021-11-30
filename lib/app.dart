@@ -1,4 +1,6 @@
 import 'package:agile_project/landingpage/landing_page.dart';
+import 'package:agile_project/profilepage/profile.dart';
+import 'package:agile_project/profilepage/profilesetting.dart';
 import 'package:agile_project/questions/questions_page.dart';
 import 'package:flutter/material.dart';
 import 'landingpage/forgot_password_page.dart';
@@ -32,6 +34,8 @@ class ReduxApp extends StatelessWidget {
           '/category': (context) => CategoryScreen(),
           '/landing': (context) => LandingPage(),
           '/forgotPassword': (context) => ForgotPasswordScreen(),
+          '/profile_setting': (context) => ProfileSetting(),
+          '/profile': (context) => ProfilePage(),
         },
       ),
     );
