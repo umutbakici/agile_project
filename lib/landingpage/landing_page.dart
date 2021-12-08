@@ -22,6 +22,11 @@ class _LandingPageState extends State<LandingPage> {
         elevation: 0.0,
         leading: Container(),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/achievement');
+              },
+              icon: Icon(Icons.emoji_events_outlined)),
           /*
           IconButton(
               onPressed: () {

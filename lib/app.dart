@@ -3,6 +3,7 @@ import 'package:agile_project/profilepage/profile.dart';
 import 'package:agile_project/profilepage/profilesetting.dart';
 import 'package:agile_project/questions/questions_page.dart';
 import 'package:flutter/material.dart';
+import 'achievement/achievement_page.dart';
 import 'landingpage/forgot_password_page.dart';
 import 'models/app_state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -31,6 +32,7 @@ class ReduxApp extends StatelessWidget {
           '/questions': (context) => QuestionsScreen(),
           '/store': (context) => StoreScreen(),
           '/leaderboard': (context) => LeaderboardScreen(),
+          '/achievement': (context) => AchievementScreen(),
           '/category': (context) => CategoryScreen(),
           '/landing': (context) => LandingPage(),
           '/forgotPassword': (context) => ForgotPasswordScreen(),
