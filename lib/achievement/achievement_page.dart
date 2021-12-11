@@ -16,6 +16,8 @@ class Achievement {
   Achievement({this.name, this.description, this.image});
 }
 
+String achievement1 = "Achievement Name";
+
 List<Achievement> Achievements = [
   Achievement(
       name: "In a Hurry!",
@@ -45,6 +47,8 @@ List<Achievement> Achievements = [
 class _AchievementScreenState extends State<AchievementScreen> {
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => achievementNotification(achievement1));
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -58,7 +62,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, '/landing');
                 },
                 icon: Icon(Icons.home)),
           ],
@@ -118,5 +122,51 @@ class _AchievementScreenState extends State<AchievementScreen> {
             ),
           )
         ]));
+  }
+
+  achievementNotification(achievement) {
+    showGeneralDialog(
+      barrierLabel: "Label",
+      barrierDismissible: true,
+      barrierColor: Colors.transparent,
+      transitionDuration: Duration(milliseconds: 700),
+      context: context,
+      pageBuilder: (context, anim1, anim2) {
+        return Material(
+            type: MaterialType.transparency,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 100,
+                child: SizedBox(
+                    width: 300,
+                    child: Center(
+                      child: Text(
+                        "Congratulations!" +
+                            "\n" +
+                            achievement.toString() +
+                            "\n" +
+                            ' Added to profile',
+                        style: TextStyle(
+                            color: Color(0xFF00695C),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )),
+                margin: EdgeInsets.only(top: 120, left: 15, right: 15),
+                decoration: BoxDecoration(
+                  color: Colors.indigo[50],
+                  borderRadius: BorderRadius.circular(80),
+                ),
+              ),
+            ));
+      },
+      transitionBuilder: (context, anim1, anim2, child) {
+        return SlideTransition(
+          position:
+              Tween(begin: Offset(0, -1), end: Offset(0, 0)).animate(anim1),
+          child: child,
+        );
+      },
+    );
   }
 }
