@@ -42,7 +42,7 @@ class _LandingPageState extends State<LandingPage> {
           IconButton(
               onPressed: () {
                 //TO DO SETTINGS
-                //Navigator.pushNamed(context, '/settings');
+                Navigator.pushNamed(context, '/profile_setting');
               },
               icon: Icon(Icons.settings)),
         ],

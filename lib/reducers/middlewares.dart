@@ -28,6 +28,31 @@ ThunkAction<AppState> setInventoryItemCount(String item, int count) {
   };
 }
 
+ThunkAction<AppState> incUserStat(String stat, int count) {
+  return (Store<AppState> store) async {
+    var newStats = new Map<String, dynamic>.from(store.state.user.stats);
+    if (newStats.containsKey(stat))
+      newStats[stat] += count;
+    else
+      newStats[stat] = count;
+    final newUser = store.state.user.copyWith(stats: newStats);
+    store.dispatch(new UserLoadedAction(newUser));
+    if (newStats[stat] % 10 == 0) {
+      store.dispatch(achievementCompleted(stat, newStats[stat]));
+    }
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(store.state.user.username)
+        .update({'stats.$stat': newStats[stat]});
+  };
+}
+
+ThunkAction<AppState> achievementCompleted(String name, int count) {
+  return (Store<AppState> store) async {
+    print("\n\nAchievement $name $count completed!\n\n");
+  };
+}
+
 ThunkAction<AppState> addXPGold(int xp, int gold) {
   return (Store<AppState> store) async {
     final int finalXP = (xp + store.state.user.XP) % 300;

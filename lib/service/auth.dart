@@ -49,7 +49,8 @@ class AuthService {
         "gold": 0,
         "level": 1,
         "XP": 0,
-        "inventory": {"50/50": 5, "pass": 10}
+        "inventory": {"50/50": 5, "pass": 10},
+        "stats": {"questions_answered": 0}
       });
       return "Signed up.";
     } on FirebaseAuthException catch (e) {
@@ -70,7 +71,10 @@ class AuthService {
             gold: ds.data()["gold"],
             level: ds.data()["level"],
             mail: ds.data()["mail"],
-            inventory: ds.data()["inventory"]);
+            inventory: ds.data()["inventory"],
+            stats: ds.data().containsKey("stats")
+                ? ds.data()["stats"]
+                : {"questions_answered": 0});
         print("authservice: ${u.toString()}");
         return u;
       }
@@ -93,7 +97,10 @@ class AuthService {
             gold: ds.data()["gold"],
             level: ds.data()["level"],
             mail: ds.data()["mail"],
-            inventory: ds.data()["inventory"]);
+            inventory: ds.data()["inventory"],
+            stats: ds.data().containsKey("stats")
+                ? ds.data()["stats"]
+                : {"questions_answered": 0});
         print("authservice: ${u.toString()}");
         return u;
       }

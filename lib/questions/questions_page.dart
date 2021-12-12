@@ -53,6 +53,8 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       if (widget.controller.areQuestionsFinished()) {
         //showAlert();
+
+        aps.store.dispatch(incUserStat("quiz_completed", 1));
         final int xpToAdd =
             (scoreList.reduce((a, b) => a + b) * 10 * difficultyMultiplier)
                     .round() +
@@ -101,7 +103,6 @@ class _QuizPageState extends State<QuizPage> {
         }
 
         aps.store.dispatch(addXPGold(xpToAdd, gainedGold));
-
         Alert(
             context: context,
             image: Image.network(currentImg),
@@ -123,12 +124,27 @@ class _QuizPageState extends State<QuizPage> {
         if (userPickedAnswer == correctAnswer) {
           gainedGold += 5;
           String difficulty = widget.controller.getDifficulty();
+          aps.store.dispatch(incUserStat("questions_answered", 1));
+
+          aps.store.dispatch(
+              incUserStat("${widget.controller.getCategory()}_answered", 1));
           switch (difficulty) {
             case "medium":
-              difficultyMultiplier += 0.1;
+              {
+                difficultyMultiplier += 0.1;
+                aps.store.dispatch(incUserStat("medium_questions_answered", 1));
+              }
               break;
             case "hard":
-              difficultyMultiplier += 0.2;
+              {
+                difficultyMultiplier += 0.2;
+                aps.store.dispatch(incUserStat("hard_questions_answered", 1));
+              }
+              break;
+            case "easy":
+              {
+                aps.store.dispatch(incUserStat("easy_questions_answered", 1));
+              }
               break;
           }
           scoreKeeper.add(Icon(
