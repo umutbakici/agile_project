@@ -44,6 +44,7 @@ class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
   List<int> scoreList = [];
   double difficultyMultiplier = 1;
+  int gainedGold = 0;
 
   void checkAnswer(String userPickedAnswer) {
     String correctAnswer = widget.controller.getCorrectAnswer();
@@ -55,7 +56,7 @@ class _QuizPageState extends State<QuizPage> {
             (scoreList.reduce((a, b) => a + b) * 10 * difficultyMultiplier)
                     .round() +
                 widget.controller.getTime();
-        aps.store.dispatch(addXP(xpToAdd));
+        aps.store.dispatch(addXPGold(xpToAdd, gainedGold));
         print(widget.controller.getTime());
         widget.controller.reset();
         scoreKeeper = [];
@@ -63,6 +64,7 @@ class _QuizPageState extends State<QuizPage> {
             .popAndPushNamed("/leaderboard");
       } else {
         if (userPickedAnswer == correctAnswer) {
+          gainedGold += 5;
           String difficulty = widget.controller.getDifficulty();
           switch (difficulty) {
             case "medium":

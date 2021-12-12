@@ -1,3 +1,4 @@
+import 'package:agile_project/models/user.dart';
 import 'package:agile_project/store/store_listview.dart';
 import 'package:agile_project/store/store_tile.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +24,11 @@ class _StoreScreenState extends State<StoreScreen> {
         elevation: 0.0,
         leading: Container(),
         actions: [
-          StoreConnector<AppState, String>(
-              builder: (context, goldd) {
-                return Text("Gold: $goldd");
+          StoreConnector<AppState, User>(
+              builder: (context, user) {
+                return Text("Gold: ${user.gold}");
               },
-              converter: (store) => store.state.user.gold.toString()),
+              converter: (store) => store.state.user),
           IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/landing');

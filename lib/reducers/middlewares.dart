@@ -28,16 +28,21 @@ ThunkAction<AppState> setInventoryItemCount(String item, int count) {
   };
 }
 
-ThunkAction<AppState> addXP(int xp) {
+ThunkAction<AppState> addXPGold(int xp, int gold) {
   return (Store<AppState> store) async {
     final int finalXP = (xp + store.state.user.XP) % 300;
     final int lvlDelta = (xp + store.state.user.XP) ~/ 300;
-    final User u = store.state.user
-        .copyWith(XP: finalXP, level: store.state.user.level + lvlDelta);
+    final int totalGold = gold + store.state.user.gold;
+    final User u = store.state.user.copyWith(
+        XP: finalXP, level: store.state.user.level + lvlDelta, gold: totalGold);
     await FirebaseFirestore.instance
         .collection("users")
         .doc(store.state.user.username)
-        .update({'XP': finalXP, 'level': FieldValue.increment(lvlDelta)});
+        .update({
+      'XP': finalXP,
+      'level': FieldValue.increment(lvlDelta),
+      'gold': totalGold
+    });
     store.dispatch(new UserLoadedAction(u));
   };
 }
