@@ -8,6 +8,7 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:agile_project/models/app_state.dart' as aps;
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class QuestionsScreen extends GetView<QuestionsController> {
   @override
@@ -56,12 +57,68 @@ class _QuizPageState extends State<QuizPage> {
             (scoreList.reduce((a, b) => a + b) * 10 * difficultyMultiplier)
                     .round() +
                 widget.controller.getTime();
-        aps.store.dispatch(addXPGold(xpToAdd, gainedGold));
+        final int correctCount = scoreList.reduce((a, b) => a + b);
+
         print(widget.controller.getTime());
         widget.controller.reset();
         scoreKeeper = [];
-        Navigator.of(context, rootNavigator: true)
-            .popAndPushNamed("/leaderboard");
+
+        String goldImg =
+            "https://thumbs.dreamstime.com/b/gold-trophy-cup-winner-concept-hand-drawn-vector-illustration-isolated-dark-white-background-189822133.jpg";
+        String silverImg =
+            "https://5.imimg.com/data5/WX/SJ/MY-3175717/silver-trophy-500x500.jpg";
+        String bronzeImg =
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS582ExGF6WVg-aLqv8BNkbL_j_3O_3qtckjQ&usqp=CAU";
+
+        String bronzeText = "Congratulations!\n You answered " +
+            correctCount.toString() +
+            " questions correctly. You are rewarded with 10 gold.";
+
+        String silverText = "Congratulations!\n You answered " +
+            correctCount.toString() +
+            " questions correctly. You are rewarded with 25 gold.";
+
+        String goldText =
+            "Congratulations!\n You answered all questions correctly. You are rewarded with 100 gold.";
+
+        var currentText;
+        var currentImg;
+
+        if (correctCount > 4 && correctCount <= 7) {
+          currentImg = bronzeImg;
+          currentText = bronzeText;
+          gainedGold += 10;
+        }
+        if (correctCount > 7) {
+          currentImg = silverImg;
+          currentText = silverText;
+          gainedGold += 25;
+        }
+        if (correctCount == 10) {
+          currentImg = goldImg;
+          currentText = goldText;
+          gainedGold += 100;
+        }
+
+        aps.store.dispatch(addXPGold(xpToAdd, gainedGold));
+
+        Alert(
+            context: context,
+            image: Image.network(currentImg),
+            content: Text(
+              currentText,
+              textAlign: TextAlign.center,
+            ),
+            buttons: [
+              DialogButton(
+                onPressed: () => Navigator.of(context, rootNavigator: true)
+                    .popAndPushNamed("/leaderboard"),
+                child: Text(
+                  "Cool",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              )
+            ]).show();
       } else {
         if (userPickedAnswer == correctAnswer) {
           gainedGold += 5;
