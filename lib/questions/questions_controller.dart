@@ -66,6 +66,10 @@ class QuestionsController extends GetxController {
     }
   }
 
+  String getDifficulty() {
+    return _questionsList.value[_questionNumber]["difficulty"];
+  }
+
   String getQuestionText() {
     return _questionsList.value[_questionNumber]["question"];
   }
