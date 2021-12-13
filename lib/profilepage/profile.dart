@@ -286,21 +286,15 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
   Widget ProfileImage() => Column(children: [
-        StreamBuilder<QuerySnapshot>(
-            stream: users,
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              final data = snapshot.requireData;
-              return Column(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: profileHeight / 2,
-                    backgroundColor: Colors.grey.shade800,
-                    backgroundImage:
-                        NetworkImage(snapshot.data.docs[1]['pic_url']),
-                  ),
-                ],
-              );
-            }),
-      ]);
+                  StoreConnector<AppState, User>(
+                      builder: (context, name) {
+                        return CircleAvatar(
+                          radius: profileHeight / 2,
+                          backgroundColor: Colors.grey.shade800,
+                          backgroundImage:
+                          NetworkImage(name.pic_url.toString()),
+                        );
+                      },
+                      converter: (store) => store.state.user ?? User()),
+                ],);
 }

@@ -92,7 +92,7 @@ class _LandingPageState extends State<LandingPage> {
                                     builder: (context, user) {
                                       return LinearProgressIndicator(
                                         value: user.XP / 300.0,
-                                        color: Color.fromRGBO(0, 0, 0, 1),
+                                        backgroundColor: Color.fromRGBO(0, 0, 0, 1),
                                       );
                                     },
                                     converter: (store) =>
