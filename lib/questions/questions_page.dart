@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:agile_project/questions/questions_controller.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:agile_project/reducers/middlewares.dart';
@@ -210,41 +212,72 @@ class _QuizPageState extends State<QuizPage> {
             )
           : Stack(children: [
               Obx(() {
-                return CircularCountDownTimer(
-                  duration: 60,
-                  initialDuration: 0,
-                  controller: widget.controller.countDownController.value,
-                  width: 50,
-                  height: 50,
-                  ringColor: Colors.grey[300],
-                  ringGradient: null,
-                  fillColor: Colors.purpleAccent[100],
-                  fillGradient: null,
-                  backgroundColor: Colors.purple[500],
-                  backgroundGradient: null,
-                  strokeWidth: 20.0,
-                  strokeCap: StrokeCap.round,
-                  textStyle: TextStyle(
-                      fontSize: 33.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                  textFormat: CountdownTextFormat.S,
-                  isReverse: true,
-                  isReverseAnimation: false,
-                  isTimerTextShown: true,
-                  autoStart: true,
-                  onStart: () {
-                    print('Countdown Started');
-                  },
-                  onComplete: () {
-                    print('Countdown Ended');
-                    widget.controller.timeEnded.value = true;
-                    widget.controller.reset();
-                    scoreKeeper = [];
-                    Navigator.of(context, rootNavigator: true)
-                        .popAndPushNamed("/leaderboard");
-                  },
-                );
+                return Row(children: [
+                  Container(
+                    child: CircularCountDownTimer(
+                      duration: 60,
+                      initialDuration: 0,
+                      controller: widget.controller.countDownController.value,
+                      width: 50,
+                      height: 50,
+                      ringColor: Colors.grey[300],
+                      ringGradient: null,
+                      fillColor: Colors.purpleAccent[100],
+                      fillGradient: null,
+                      backgroundColor: Colors.purple[500],
+                      backgroundGradient: null,
+                      strokeWidth: 20.0,
+                      strokeCap: StrokeCap.round,
+                      textStyle: TextStyle(
+                          fontSize: 33.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      textFormat: CountdownTextFormat.S,
+                      isReverse: true,
+                      isReverseAnimation: false,
+                      isTimerTextShown: true,
+                      autoStart: true,
+                      onStart: () {
+                        print('Countdown Started');
+                      },
+                      onComplete: () {
+                        print('Countdown Ended');
+                        widget.controller.timeEnded.value = true;
+                        widget.controller.reset();
+                        scoreKeeper = [];
+                        Navigator.of(context, rootNavigator: true)
+                            .popAndPushNamed("/leaderboard");
+                      },
+                    ),
+                    margin: EdgeInsets.only(left: 30, top: 30),
+                  ),
+                  Container(
+                    child: GestureDetector(
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(
+                            "https://tridacmortgages.com/wp-content/uploads/2011/09/5050_logo.png"),
+                      ),
+                      onTap: () {
+                        widget.controller.useFiftyFiftyJoker();
+                      },
+                    ),
+                    margin: EdgeInsets.only(left: 30, top: 30),
+                  ),
+                  Container(
+                    child: GestureDetector(
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(
+                            'https://thumbs.dreamstime.com/b/pass-text-red-grungy-vintage-round-stamp-rubber-205333260.jpg'),
+                      ),
+                      onTap: () {
+                        widget.controller.usePassJoker();
+                      },
+                    ),
+                    margin: EdgeInsets.only(left: 20, top: 30),
+                  ),
+                ]);
               }),
               Obx(() {
                 return Column(
@@ -268,16 +301,16 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     ),
                     Expanded(
-                        flex: 1,
+                      flex: 1,
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 40),
                         child: Obx(() {
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 40),
-                            child: Column(
-                              children:
-                                  returnExpandedWidgets(widget.controller),
-                            ),
+                          return Column(
+                            children: returnExpandedWidgets(widget.controller),
                           );
-                        })),
+                        }),
+                      ),
+                    ),
                     Row(
                       children: scoreKeeper,
                     )
@@ -312,10 +345,24 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   List<Expanded> returnExpandedWidgets(controller) {
+    int numberOfChoices = controller.numberOfChoices;
     List<Expanded> tempList = [];
     List allChoices = controller.getAllChoices();
+    if (controller.isFiftyFiftyActive.value) {
+      numberOfChoices = 2;
+      //List<String> toBeRemoved = [];
+      String correctAnswer = controller.getCorrectAnswer();
+      try {
+        while (allChoices.length > 2) {
+          int randomInt = Random().nextInt(allChoices.length);
+          if (allChoices[randomInt] != correctAnswer) {
+            allChoices.removeAt(randomInt);
+          }
+        }
+      } catch (Exception) {}
+    }
     int i = 0;
-    while (i < controller.numberOfChoices) {
+    while (i < numberOfChoices) {
       tempList.add(buildExpanded(allChoices[i]));
       i++;
     }

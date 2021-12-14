@@ -95,9 +95,11 @@ class AuthService {
             username: ds.data()["user_name"],
             XP: ds.data()["XP"],
             gold: ds.data()["gold"],
+            achievements: ds.data()["achievements"],
             level: ds.data()["level"],
             mail: ds.data()["mail"],
             inventory: ds.data()["inventory"],
+            jokers: ds.data()["jokers"],
             stats: ds.data().containsKey("stats")
                 ? ds.data()["stats"]
                 : {"questions_answered": 0});

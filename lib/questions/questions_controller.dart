@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:agile_project/models/user.dart' as au;
+import 'package:agile_project/service/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -13,6 +16,8 @@ class QuestionsController extends GetxController {
   final isLoading = true.obs;
   final firestore = FirebaseFirestore.instance;
   String category = '';
+  final _user = <au.User>[].obs;
+  final isFiftyFiftyActive = false.obs;
 
   final countDownController = CountDownController().obs;
 
@@ -20,12 +25,13 @@ class QuestionsController extends GetxController {
   final timeEnded = false.obs;
 
   onInit() async {
-    await fetchData();
+    await fetchQuestionsData();
+    await fetchUsersData();
     isLoading.value = false;
     super.onInit();
   }
 
-  Future<void> fetchData() async {
+  Future<void> fetchQuestionsData() async {
     QuerySnapshot collectionSnapshot;
     List tempList = [];
     try {
@@ -42,6 +48,25 @@ class QuestionsController extends GetxController {
     } catch (e) {
       print(e);
     }
+  }
+
+  fetchUsersData() async {
+    try {
+      _user.value[0] = await AuthService()
+          .getUserWithEmail(FirebaseAuth.instance.currentUser.email);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  useFiftyFiftyJoker() {
+    isFiftyFiftyActive.value = true;
+    //(removeAt)_user.value[0].jokers
+  }
+
+  usePassJoker() {
+    nextQuestion();
+    //(removeAt)_user.value[0].jokers
   }
 
   List trimList(oldList) {
@@ -63,6 +88,7 @@ class QuestionsController extends GetxController {
   void nextQuestion() {
     if (_questionNumber < totalQuestionNumber - 1) {
       _questionNumber++;
+      isFiftyFiftyActive.value = false;
     }
   }
 
