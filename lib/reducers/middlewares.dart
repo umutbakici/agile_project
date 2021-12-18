@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:agile_project/models/app_state.dart';
+import 'package:agile_project/models/room.dart';
 import 'package:agile_project/reducers/actions.dart';
 import 'package:agile_project/models/user.dart';
 import 'package:agile_project/service/auth.dart';
@@ -53,6 +56,45 @@ ThunkAction<AppState> achievementCompleted(String name, int count) {
   };
 }
 
+ThunkAction<AppState> createRoom(String category) {
+  return (Store<AppState> store) async {
+    var r = Room(
+        category: category,
+        roomID: getRandomString(15),
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        players: [store.state.user.username]);
+    print("$r");
+    store.dispatch(new RoomUpdatedAction(r));
+    await FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(r.roomID)
+        .set(r.toMap());
+    Stream documentStream = FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(r.roomID)
+        .snapshots();
+    documentStream.listen((event) {
+      Room r = Room(
+          createdAt: event.data()["createdAt"],
+          category: event.data()["category"],
+          gameStatus: event.data()["gameStatus"],
+          players: event.data()["players"],
+          roomID: event.data()["roomID"]);
+      store.dispatch(new RoomUpdatedAction(r));
+    });
+  };
+}
+
+ThunkAction<AppState> updateRoom(Room r) {
+  store.dispatch(new RoomUpdatedAction(r));
+  return (Store<AppState> store) async {
+    await FirebaseFirestore.instance
+        .collection("rooms")
+        .doc(r.roomID)
+        .set(r.toMap());
+  };
+}
+
 ThunkAction<AppState> addXPGold(int xp, int gold) {
   return (Store<AppState> store) async {
     final int finalXP = (xp + store.state.user.XP) % 300;
@@ -71,3 +113,9 @@ ThunkAction<AppState> addXPGold(int xp, int gold) {
     store.dispatch(new UserLoadedAction(u));
   };
 }
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+Random _rnd = Random();
+
+String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));

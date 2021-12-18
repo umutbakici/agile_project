@@ -123,7 +123,9 @@ class _LandingPageState extends State<LandingPage> {
               Expanded(
                 flex: 1,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/mpcreatejoin');
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 22.0),
                     child: Text(

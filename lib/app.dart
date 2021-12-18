@@ -1,4 +1,7 @@
 import 'package:agile_project/landingpage/landing_page.dart';
+import 'package:agile_project/multiplayer/category_screen_mp.dart';
+import 'package:agile_project/multiplayer/mpcreatejoin.dart';
+import 'package:agile_project/multiplayer/mpwaiting.dart';
 import 'package:agile_project/profilepage/profile.dart';
 import 'package:agile_project/profilepage/profilesetting.dart';
 import 'package:agile_project/questions/questions_page.dart';
@@ -38,6 +41,9 @@ class ReduxApp extends StatelessWidget {
           '/forgotPassword': (context) => ForgotPasswordScreen(),
           '/profile_setting': (context) => ProfileSetting(),
           '/profile': (context) => ProfilePage(),
+          '/mpcreatejoin': (context) => MPCreateJoinPage(),
+          '/categorymp': (context) => CategoryScreenMP(),
+          '/waitmp': (context) => MPWaitPage()
         },
       ),
     );
