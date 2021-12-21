@@ -2,6 +2,7 @@ import 'package:agile_project/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:agile_project/models/app_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StoreScreen extends StatefulWidget {
   @override
@@ -18,56 +19,56 @@ class StoreItem {
 
 List<StoreItem> storeItems = [
   StoreItem(
-      name: "Item 1",
+      name: "50/50",
       price: 100,
       image:
           'https://tridacmortgages.com/wp-content/uploads/2011/09/5050_logo.png'),
   StoreItem(
-      name: "Item 2",
+      name: "pass",
       price: 100,
       image:
           'https://thumbs.dreamstime.com/b/pass-text-red-grungy-vintage-round-stamp-rubber-205333260.jpg'),
   StoreItem(
-      name: "Item 3",
+      name: "Avatar 1",
       price: 50,
       image:
           'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/131654569/original/fd45e2a3d3d1643130922e98b0ce921863b6127a/make-you-cartoon-avatar.jpeg'),
   StoreItem(
-      name: "Item 4",
+      name: "Avatar 2",
       price: 50,
       image:
           'https://t4.ftcdn.net/jpg/02/45/28/17/360_F_245281783_3zeOLu7mhjUmYbFlBwSNsfwQmQZzukWo.jpg'),
   StoreItem(
-      name: "Item 5",
+      name: "Avatar 3",
       price: 50,
       image:
           'https://www.kindpng.com/picc/m/24-248442_female-user-avatar-woman-profile-member-user-profile.png'),
   StoreItem(
-      name: "Item 6",
+      name: "Avatar 4",
       price: 50,
       image:
           'https://thumbs.dreamstime.com/b/businessman-icon-v…on-vector-male-avatar-profile-image-182095609.jpg'),
   StoreItem(
-      name: "Item 7",
+      name: "Avatar 5",
       price: 50,
       image:
           'https://www.shareicon.net/data/256x256/2016/05/26/771188_man_512x512.png'),
   StoreItem(
-      name: "Item 8",
+      name: "Avatar 6",
       price: 50,
       image:
           'https://stanforduni.us/wp-content/uploads/2020/05/default-avatar.png'),
   StoreItem(
-      name: "Item 9",
+      name: "Avatar 7",
       price: 50,
       image:
           'https://www.shareicon.net/data/256x256/2016/05/24/770121_man_512x512.png'),
   StoreItem(
-      name: "Item 10",
+      name: "Avatar 8",
       price: 50,
       image: 'https://homevest.com/wp-content/uploads/2019/05/female1-512.png'),
   StoreItem(
-      name: "Item 11",
+      name: "Avatar 9",
       price: 50,
       image:
           'https://www.pngitem.com/pimgs/m/0-6243_user-profile-avatar-scalable-vector-graphics-icon-woman.png'),
@@ -136,15 +137,36 @@ class _StoreScreenState extends State<StoreScreen> {
                                     minimumSize: Size(150,
                                         48), // takes postional arguments as width and height
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    String bought_item = storeItems[index].name;
                                     if (user.gold < storeItems[index].price) {
                                       print("${user.gold} Not enough gold!");
                                       _showDialog("Not enough gold!",
                                           "You have ${user.gold} gold.");
                                     } else {
                                       print("Bought!");
-                                      //TO DO firebase -  increase user inventory item count
-                                      //TO DO firebase -  decrease price from users gold field
+                                      _showDialog("Bought!",
+                                          "${storeItems[index].name} added to your inventory.");
+                                      //firebase - increase user inventory item count
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(user.username.toString())
+                                          .update(
+                                        {
+                                          "inventory.$bought_item":
+                                              FieldValue.increment(1),
+                                        },
+                                      );
+                                      //firebase - decrease price from users gold field
+                                      int deductedPrice =
+                                          storeItems[index].price;
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(user.username)
+                                          .update({
+                                        "gold":
+                                            FieldValue.increment(-deductedPrice)
+                                      });
                                     }
                                   },
                                   icon: Icon(Icons.shopping_basket_outlined,
