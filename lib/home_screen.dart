@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-
-import 'models/app_state.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,14 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         elevation: 0.0,
         leading: Container(),
-        actions: [
-          IconButton(
-              onPressed: () {
-                //TO DO SETTINGS
-                //Navigator.pushNamed(context, '/settings');
-              },
-              icon: Icon(Icons.settings)),
-        ],
+        actions: [],
       ),
       body: SafeArea(
         maintainBottomViewPadding: false,

@@ -20,7 +20,11 @@ class _LandingPageState extends State<LandingPage> {
         backgroundColor: Color(0xFF80D8FF),
         centerTitle: true,
         elevation: 0.0,
-        leading: Container(),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/app_setting');
+            },
+            icon: Icon(Icons.logout)),
         actions: [
           IconButton(
               onPressed: () {
