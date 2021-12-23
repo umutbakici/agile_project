@@ -79,7 +79,9 @@ class _MPCreateJoinPageState extends State<MPCreateJoinPage> {
                 width: 150,
                 height: 150,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/joinmp');
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 22.0),
                     child: Text(

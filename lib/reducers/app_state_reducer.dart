@@ -19,12 +19,15 @@ AppState _userLoaded(AppState as, UserLoadedAction action) {
 
 AppState _roomUpdated(AppState as, RoomUpdatedAction action) {
   print("Room Update Action Triggered");
-  if (action.room.players[0] == as.user.username && // We are host
-      action.room.gameStatus == "WAIT" && // Game is Wait
-      action.room.players.length > 1) {
-    print("STARTING GAME");
-    store.dispatch(updateRoom(action.room.copyWith(gameStatus: "IN PROGRESS")));
-    return as;
+  if (action.room.players[0] == as.user.username) {
+    // We are host
+    if (action.room.gameStatus == "WAIT" && // Game is Wait
+        action.room.players.length > 1) {
+      print("STARTING GAME");
+      store.dispatch(updateRoom(action.room.copyWith(
+          gameStatus: "IN PROGRESS"))); // Set room status to IN PROGRESS
+      return as;
+    }
   }
   return as.copyWith(room: action.room);
 }
