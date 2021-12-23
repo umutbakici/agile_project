@@ -50,7 +50,8 @@ class AuthService {
         "level": 1,
         "XP": 0,
         "inventory": {"50/50": 5, "pass": 10},
-        "stats": {"questions_answered": 0}
+        "stats": {"questions_answered": 0},
+        "isAdmin": false,
       });
       return "Signed up.";
     } on FirebaseAuthException catch (e) {
@@ -74,7 +75,11 @@ class AuthService {
             inventory: ds.data()["inventory"],
             stats: ds.data().containsKey("stats")
                 ? ds.data()["stats"]
-                : {"questions_answered": 0});
+                : {"questions_answered": 0},
+            isAdmin: ds.data().containsKey("isAdmin")
+                ? ds.data()["isAdmin"]
+                : false);
+
         print("authservice: ${u.toString()}");
         return u;
       }
@@ -102,7 +107,11 @@ class AuthService {
             jokers: ds.data()["jokers"],
             stats: ds.data().containsKey("stats")
                 ? ds.data()["stats"]
-                : {"questions_answered": 0});
+                : {"questions_answered": 0},
+            isAdmin: ds.data().containsKey("isAdmin")
+                ? ds.data()["isAdmin"]
+                : false);
+
         print("authservice: ${u.toString()}");
         return u;
       }

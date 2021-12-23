@@ -2,6 +2,7 @@ class User {
   final String username;
   final int XP;
   final int gold;
+  final bool isAdmin;
   final Map<String, dynamic> achievements;
   final int level;
   final String mail;
@@ -14,13 +15,14 @@ class User {
       this.level = 0,
       this.mail = "",
       this.gold = 0,
+      this.isAdmin = false,
       this.achievements = const {},
       this.inventory = const {},
       this.jokers = const {},
       this.stats = const {}});
   @override
   String toString() {
-    return 'User{username: $username, XP: $XP, level: $level, mail: $mail, inventory: $inventory, stats: $stats, achivements: $achievements, jokers: $jokers}';
+    return 'User{username: $username, isAdmin: $isAdmin XP: $XP, level: $level, mail: $mail, inventory: $inventory, stats: $stats, achivements: $achievements, jokers: $jokers}';
   }
 
   User copyWith(
@@ -29,6 +31,7 @@ class User {
       int XP,
       int gold,
       int level,
+      bool isAdmin,
       Map<String, dynamic> achievements,
       Map<String, dynamic> jokers,
       Map<String, dynamic> inventory,
@@ -42,6 +45,7 @@ class User {
         jokers: jokers ?? this.jokers,
         inventory: inventory ?? this.inventory,
         stats: stats ?? this.stats,
+        isAdmin: isAdmin ?? this.isAdmin,
         XP: XP ?? this.XP);
   }
 }
