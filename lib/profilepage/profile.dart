@@ -98,29 +98,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text('12',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.deepOrange)),
-                    Text(
-                      'THROPIES',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Colors.deepOrange),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              MaterialButton(
-                onPressed: () {},
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
                     StoreConnector<AppState, User>(
                         builder: (context, name) {
                           return Text(name.gold.toString(),
@@ -148,13 +125,44 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text('3',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.orangeAccent)),
+                    StoreConnector<AppState, User>(
+                        builder: (context, name) {
+                          return Text(name.inventory['50/50'].toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.amber));
+                        },
+                        converter: (store) => store.state.user ?? User()),
                     Text(
-                      'SKINS',
+                      '50/50',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: Colors.amber),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              MaterialButton(
+                onPressed: () {},
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    StoreConnector<AppState, User>(
+                        builder: (context, name) {
+                          return Text(name.inventory['pass'].toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.amber));
+                        },
+                        converter: (store) => store.state.user ?? User()),
+                    Text(
+                      'PASS',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
@@ -173,21 +181,21 @@ class _ProfilePageState extends State<ProfilePage> {
                 radius: profileHeight / 3,
                 backgroundColor: Colors.grey.shade800,
                 backgroundImage: NetworkImage(
-                    'https://thumbs.dreamstime.com/b/gold-medal-best-first-place-winner-champion-number-one-st-place-metalworker-s-reward-red-ribbon-isolated-white-gold-medal-best-158358278.jpg'),
-              ),
-              const SizedBox(height: 25),
-              CircleAvatar(
-                radius: profileHeight / 3,
-                backgroundColor: Colors.grey.shade800,
-                backgroundImage: NetworkImage(
                     'https://i.pinimg.com/originals/3d/4f/8a/3d4f8a745269e02127b32dabf127361d.jpg'),
               ),
               const SizedBox(height: 25),
               CircleAvatar(
                 radius: profileHeight / 3,
                 backgroundColor: Colors.grey.shade800,
+                backgroundImage: NetworkImage(
+                    'https://tridacmortgages.com/wp-content/uploads/2011/09/5050_logo.png'),
+              ),
+              const SizedBox(height: 25),
+              CircleAvatar(
+                radius: profileHeight / 3,
+                backgroundColor: Colors.grey.shade800,
                 backgroundImage:
-                    NetworkImage('https://www.blexar.com/avatar.png'),
+                    NetworkImage('https://thumbs.dreamstime.com/b/pass-text-red-grungy-vintage-round-stamp-rubber-205333260.jpg'),
               ),
             ],
           )
