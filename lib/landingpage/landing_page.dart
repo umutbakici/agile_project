@@ -20,7 +20,11 @@ class _LandingPageState extends State<LandingPage> {
         backgroundColor: Color(0xFF80D8FF),
         centerTitle: true,
         elevation: 0.0,
-        leading: Container(),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/app_setting');
+            },
+            icon: Icon(Icons.logout)),
         actions: [
           IconButton(
               onPressed: () {
@@ -123,7 +127,9 @@ class _LandingPageState extends State<LandingPage> {
               Expanded(
                 flex: 1,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/mpcreatejoin');
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 22.0),
                     child: Text(

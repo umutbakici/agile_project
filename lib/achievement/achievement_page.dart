@@ -1,4 +1,9 @@
+import 'package:agile_project/category/category_screen.dart';
+import 'package:agile_project/service/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:agile_project/models/user.dart' as au;
 
 class AchievementScreen extends StatefulWidget {
   const AchievementScreen({Key key}) : super(key: key);
@@ -45,10 +50,32 @@ List<Achievement> Achievements = [
 ];
 
 class _AchievementScreenState extends State<AchievementScreen> {
+  au.User user;
+  //final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData().then((result) {
+      print("result: $result");
+      setState(() {});
+    });
+  }
+
+  fetchData() async {
+    try {
+      user = await AuthService()
+          .getUserWithEmail(FirebaseAuth.instance.currentUser.email);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance
+    /*WidgetsBinding.instance
         .addPostFrameCallback((_) => achievementNotification(achievement1));
+    */
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -81,11 +108,17 @@ class _AchievementScreenState extends State<AchievementScreen> {
                       child: Row(
                         children: [
                           Spacer(flex: 1),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Stack(
                             children: [
                               Image.network(
                                 Achievements[index].image,
+                                width: 64,
+                                height: 64,
+                              ),
+                              Container(
+                                color: doesContain(Achievements[index].name)
+                                    ? Colors.transparent
+                                    : Colors.black26,
                                 width: 64,
                                 height: 64,
                               )
@@ -122,6 +155,18 @@ class _AchievementScreenState extends State<AchievementScreen> {
             ),
           )
         ]));
+  }
+
+  doesContain(String achievement) {
+    try {
+      if (user.achievements.containsValue(achievement)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (Exception) {
+      return false;
+    }
   }
 
   achievementNotification(achievement) {
