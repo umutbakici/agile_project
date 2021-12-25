@@ -1,4 +1,5 @@
 import 'package:agile_project/models/user.dart';
+import 'package:agile_project/reducers/middlewares.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:agile_project/models/app_state.dart';
@@ -74,39 +75,40 @@ List<StoreItem> storeItems = [
           'https://www.pngitem.com/pimgs/m/0-6243_user-profile-avatar-scalable-vector-graphics-icon-woman.png'),
 ];
 
+/*
+StoreProvider.of<AppState>(context)
+                        .dispatch(getUserDataFromFirebase()),
+*/
+
 class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'STORE',
-            //style:
-          ),
-          backgroundColor: Color(0xFF80D8FF),
-          centerTitle: true,
-          elevation: 0.0,
-          leading: Container(),
-          actions: [
-            StoreConnector<AppState, User>(
-                builder: (context, user) {
-                  return Text("Gold: ${user.gold}");
-                },
-                converter: (store) => store.state.user),
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/landing');
-                },
-                icon: Icon(Icons.home)),
-          ],
-        ),
-        body: Column(children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: storeItems.length,
-              itemBuilder: (BuildContext context, int index) {
-                return StoreConnector<AppState, User>(
-                    builder: (context, user) {
+    return StoreConnector<AppState, User>(
+        builder: (context, user) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'STORE',
+              ),
+              backgroundColor: Color(0xFF80D8FF),
+              centerTitle: true,
+              elevation: 0.0,
+              leading: Container(),
+              actions: [
+                Text("Gold: ${user.gold}"),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/landing');
+                    },
+                    icon: Icon(Icons.home)),
+              ],
+            ),
+            body: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: storeItems.length,
+                    itemBuilder: (BuildContext context, int index) {
                       return Container(
                         height: 150,
                         color: Colors.lightBlueAccent,
@@ -167,6 +169,9 @@ class _StoreScreenState extends State<StoreScreen> {
                                         "gold":
                                             FieldValue.increment(-deductedPrice)
                                       });
+                                      StoreProvider.of<AppState>(context)
+                                          .dispatch(getUserDataFromFirebase(
+                                              user.mail));
                                     }
                                   },
                                   icon: Icon(Icons.shopping_basket_outlined,
@@ -185,11 +190,13 @@ class _StoreScreenState extends State<StoreScreen> {
                         ),
                       );
                     },
-                    converter: (store) => store.state.user);
-              },
+                  ),
+                )
+              ],
             ),
-          )
-        ]));
+          );
+        },
+        converter: (store) => store.state.user);
   }
 
   void _showDialog(String title, String content) {
