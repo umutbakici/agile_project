@@ -10,57 +10,266 @@ class AdminPage extends StatefulWidget {
   _AdminPageState createState() => _AdminPageState();
 }
 
-AuthService _authService = AuthService();
-
 class _AdminPageState extends State<AdminPage> {
+  String category; //category
+  String correct_answer; //correct_answer
+  String difficulty = "easy"; //difficulty
+  String incorrect_answer1;
+  String incorrect_answer2;
+  String incorrect_answer3;
+  Map<String, dynamic> incorrect_answers = {}; //incorrect_answers {0, 1, 2}
+  String question; //question confirmPassword
+  String rand; //rand confirmPassword
+
+  final _formKey = GlobalKey<FormState>();
+
+  String handleQuestion(String value) {
+    if (value == "") {
+      return "You need to enter a question!";
+    }
+    return null;
+  }
+
+  String handleCorrectAnswer(String value) {
+    if (value == "") {
+      return "You need to enter a correct answer!";
+    }
+    return null;
+  }
+
+  String handleIncorrectAnswer(String value) {
+    if (value == "") {
+      return "Enter an incorrect answer!";
+    }
+    return null;
+  }
+
+  String handleCategory(String value) {
+    if (value == "") {
+      return "Enter a category!";
+    }
+    return null;
+  }
+
+  String handleRand(String value) {
+    if (value == "") {
+      return "Enter a value!";
+    }
+    if (value != "") {
+      if (double.parse(value) >= 1.0 || double.parse(value) <= 0.0) {
+        return "Enter the rarity of question (btwn 0 - 1)";
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, User>(
         builder: (context, user) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
-                'ADMIN PAGE',
-                //style:
-              ),
-              backgroundColor: Color(0xFF80D8FF),
-              centerTitle: true,
-              elevation: 0.0,
-              leading: Container(),
-              actions: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/landing');
-                    },
-                    icon: Icon(Icons.home)),
-              ],
+              title: Text("ADD QUESTION"),
             ),
-            body: SafeArea(
-              maintainBottomViewPadding: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Center(
+            body: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
                     child: Column(
                       children: [
                         SizedBox(
-                          width: 8.0,
+                          height: 25,
                         ),
-                        OutlinedButton(
-                          onPressed: () {
-                            //Navigator.pushNamed(context, '/');
-                            //_authService.signOut();
-                          },
-                          child: Text(
-                            'Add Question',
+                        TextFormField(
+                          keyboardType: TextInputType.name,
+                          onChanged: (text) => question = text,
+                          validator: handleQuestion,
+                          decoration: InputDecoration(
+                            labelText: 'Question',
+                            border: OutlineInputBorder(),
+                            prefixIcon:
+                                Icon(Icons.supervised_user_circle_rounded),
                           ),
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: Color(0xFF80D8FF)),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.name,
+                          onChanged: (text) => correct_answer = text,
+                          validator: handleCorrectAnswer,
+                          decoration: InputDecoration(
+                            labelText: 'Correct Answer',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.email),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.name,
+                          onChanged: (text) => incorrect_answer1 = text,
+                          validator: handleIncorrectAnswer,
+                          decoration: InputDecoration(
+                            labelText: 'Incorrect Answer 1',
+                            border: OutlineInputBorder(),
+                            prefixIcon:
+                                Icon(Icons.supervised_user_circle_rounded),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.name,
+                          onChanged: (text) => incorrect_answer2 = text,
+                          validator: handleIncorrectAnswer,
+                          decoration: InputDecoration(
+                            labelText: 'Incorrect Answer 2',
+                            border: OutlineInputBorder(),
+                            prefixIcon:
+                                Icon(Icons.supervised_user_circle_rounded),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.name,
+                          onChanged: (text) => incorrect_answer3 = text,
+                          validator: handleIncorrectAnswer,
+                          decoration: InputDecoration(
+                            labelText: 'Incorrect Answer 3',
+                            border: OutlineInputBorder(),
+                            prefixIcon:
+                                Icon(Icons.supervised_user_circle_rounded),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.name,
+                          onChanged: (text) => category = text,
+                          validator: handleCategory,
+                          decoration: InputDecoration(
+                            labelText: 'Category',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.email),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          onChanged: (text) => rand = text,
+                          validator: handleRand,
+                          decoration: InputDecoration(
+                            labelText: 'Randomity',
+                            border: OutlineInputBorder(),
+                            prefixIcon:
+                                Icon(Icons.supervised_user_circle_rounded),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "Question Difficulty: ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.blue),
+                            ),
+                            DropdownButton<String>(
+                              value: difficulty,
+                              icon: const Icon(Icons.arrow_downward),
+                              elevation: 16,
+                              style: const TextStyle(color: Colors.blue),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.blue,
+                              ),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  difficulty = newValue;
+                                });
+                              },
+                              items: <String>[
+                                'easy',
+                                'medium',
+                                'hard'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Container(
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          width: double.infinity,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: StoreConnector<AppState, VoidCallback>(
+                              converter: (store) {
+                                //return () => store
+                                //  .dispatch(getUserDataFromFirebase(mail));
+                              },
+                              builder: (context, callback) => MaterialButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState.validate()) {
+                                        try {
+                                          incorrect_answers = {
+                                            "0": incorrect_answer1,
+                                            "1": incorrect_answer2,
+                                            "2": incorrect_answer3
+                                          };
+
+                                          print(
+                                              "question: $question correct_answer: $correct_answer incorrect_answers: $incorrect_answers category: $category rand: $rand difficulty: $difficulty");
+
+                                          print("VALIDATEDD");
+
+                                          Navigator.pushNamed(
+                                              context, "/app_setting");
+
+                                          /*
+                                            signUp(context);
+                                          callback();
+                                          Navigator.pushNamed(
+                                              context, "/landing");
+                                          */
+                                        } catch (e) {}
+                                      }
+                                    },
+                                    color: Colors.blue,
+                                    child: Text(
+                                      'Add New Question',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )),
+                        ),
+                        SizedBox(
+                          height: 30,
                         ),
                       ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           );
