@@ -1,8 +1,10 @@
+import 'models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'models/app_state.dart';
-import 'models/user.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -10,6 +12,8 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   String category;
   String correct_answer;
   String difficulty = "easy";
@@ -230,8 +234,26 @@ class _AdminPageState extends State<AdminPage> {
 
                                     print("VALIDATEDD");
 
-                                    Navigator.pushNamed(
-                                        context, "/app_setting");
+                                    try {
+                                      _firestore
+                                          .collection("questions_test")
+                                          .doc("00_test")
+                                          .set({
+                                        "category": category,
+                                        "correct_answer": correct_answer,
+                                        "difficulty": difficulty,
+                                        "incorrect_answers": incorrect_answers,
+                                        "question": question,
+                                        "rand": rand,
+                                      });
+
+                                      Navigator.pushNamed(
+                                          context, "/app_setting");
+
+                                      return "Question Sent.";
+                                    } catch (e) {
+                                      return e.message;
+                                    }
                                   } catch (e) {}
                                 }
                               },
