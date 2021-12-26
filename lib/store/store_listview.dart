@@ -1,4 +1,3 @@
-import 'package:agile_project/store/store_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

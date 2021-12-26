@@ -5,6 +5,7 @@ class User {
   final Map<String, dynamic> achievements;
   final int level;
   final String mail;
+  final String pic_url;
   final Map<String, dynamic> inventory;
   final Map<String, dynamic> stats;
   final Map<String, dynamic> jokers;
@@ -13,19 +14,22 @@ class User {
       this.XP = 0,
       this.level = 0,
       this.mail = "",
+      this.pic_url = "",
       this.gold = 0,
       this.achievements = const {},
       this.inventory = const {},
       this.jokers = const {},
       this.stats = const {}});
+
   @override
   String toString() {
-    return 'User{username: $username, XP: $XP, level: $level, mail: $mail, inventory: $inventory, stats: $stats, achivements: $achievements, jokers: $jokers}';
+    return 'User{username: $username, XP: $XP, level: $level, mail: $mail, pic_url: $pic_url, inventory: $inventory, stats: $stats, achivements: $achievements, jokers: $jokers}';
   }
 
   User copyWith(
       {String username,
       String mail,
+      String pic_url,
       int XP,
       int gold,
       int level,
