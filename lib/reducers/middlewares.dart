@@ -85,6 +85,25 @@ ThunkAction<AppState> createRoom(String category) {
   };
 }
 
+ThunkAction<AppState> joinRoom(String roomID) {
+  return (Store<AppState> store) async {
+    Stream documentStream =
+        FirebaseFirestore.instance.collection('rooms').doc(roomID).snapshots();
+    documentStream.listen((event) {
+      Room r = Room(
+          createdAt: event.data()["createdAt"],
+          category: event.data()["category"],
+          gameStatus: event.data()["gameStatus"],
+          players: event.data()["players"],
+          roomID: event.data()["roomID"]);
+      store.dispatch(new RoomUpdatedAction(r));
+    });
+    await FirebaseFirestore.instance.collection('rooms').doc(roomID).update({
+      'players': FieldValue.arrayUnion([store.state.user.username])
+    });
+  };
+}
+
 ThunkAction<AppState> updateRoom(Room r) {
   store.dispatch(new RoomUpdatedAction(r));
   return (Store<AppState> store) async {
