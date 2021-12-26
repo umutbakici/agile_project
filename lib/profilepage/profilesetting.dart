@@ -39,7 +39,7 @@ class ProfileSetting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('users').snapshots();
     return Scaffold(
       appBar: AppBar(
         title: new Text("Profile Settings"),

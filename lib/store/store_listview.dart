@@ -1,5 +1,10 @@
+import 'package:agile_project/reducers/middlewares.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+
+import '../models/app_state.dart';
+import '../models/user.dart';
 
 class StoreListview extends StatefulWidget {
   const StoreListview({Key key}) : super(key: key);
@@ -11,6 +16,9 @@ class StoreListview extends StatefulWidget {
 class _StoreListviewState extends State<StoreListview> {
   @override
   Widget build(BuildContext context) {
+
+    final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('users').snapshots();
+
     return Column(children: [
       Expanded(
         child: pictures(),
@@ -35,20 +43,49 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.gold>50){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).set({'gold' : (name.gold-50),
+                    'XP':name.XP,'level':name.level,'mail':name.mail,'pic_url':name.pic_url,'user_name':name.username,
+                    'inventory':name.inventory});
+                  // FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-50)});
+                  store.dispatch(setInventoryItemCount("50/50", (name.inventory['50/50']+1)));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "50 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
+
           Spacer(
             flex: 1,
           ),
@@ -74,19 +111,44 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.gold>50){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-50)});
+                  store.dispatch(setInventoryItemCount("pass", (name.inventory['pass']+1)));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "50 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -113,19 +175,63 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['1']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("1", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+                print(name.inventory['1']);
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -152,19 +258,62 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['2']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("2", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -191,19 +340,62 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['3']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("3", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -230,19 +422,62 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['4']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("4", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -269,19 +504,62 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['5']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("5", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -308,19 +586,62 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['6']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("6", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -347,19 +668,62 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['7']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("7", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -386,19 +750,62 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['8']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("8", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,
@@ -425,19 +832,65 @@ class _StoreListviewState extends State<StoreListview> {
           Spacer(
             flex: 2,
           ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(
-                  150, 48), // takes postional arguments as width and height
-            ),
-            onPressed: () {
-              // Respond to button press
-            },
-            icon: Icon(Icons.shopping_basket_outlined, size: 30),
-            label: Text(
-              "BUY",
-              style: TextStyle(fontSize: 30),
-            ),
+          StoreConnector<AppState, User>(builder: (context, name) {
+            return ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(
+                    150, 48),
+              ),
+              onPressed: () {
+                if (name.inventory['9']==1){
+                  return AlertDialog(
+                      title: const Text('YOU HAVE THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Bought Item'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }else if(name.gold>500){
+//                  FirebaseFirestore.instance.collection('users').doc(name.username).set({'gold' : (name.gold-500),
+//                    'XP':name.XP,'level':name.level,'mail':name.mail,'pic_url':name.pic_url,'user_name':name.username,
+//                    'inventory':name.inventory});
+                  FirebaseFirestore.instance.collection('users').doc(name.username).update({'gold' : (name.gold-500)});
+                  store.dispatch(setInventoryItemCount("9", 1));
+                  print("Bought object");
+                }else{
+                  return AlertDialog(
+                      title: const Text('YOU CANT BUY THIS'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: const <Widget>[
+                            Text('Insufficient Gold Amount'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                }
+              },
+              icon: Icon(Icons.shopping_basket_outlined, size: 30),
+              label: Text(
+                "500 Coin",
+                style: TextStyle(fontSize: 30),
+              ),
+            );},
+              converter: (store) => store.state.user ?? User()
           ),
           Spacer(
             flex: 1,

@@ -40,6 +40,7 @@ class User {
     return User(
         username: username ?? this.username,
         mail: mail ?? this.mail,
+        pic_url: pic_url ?? this.pic_url,
         gold: gold ?? this.gold,
         level: level ?? this.level,
         achievements: achievements ?? this.achievements,
