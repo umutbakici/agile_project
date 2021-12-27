@@ -11,12 +11,18 @@ class AppState {
   final bool isLoggedIn;
   final User user;
   final Room room;
-  AppState({this.isLoggedIn = false, this.user, this.room});
+  final List<String> notifications;
+  AppState(
+      {this.isLoggedIn = false,
+      this.user,
+      this.room,
+      this.notifications = const []});
 
-  AppState copyWith({bool isLoggedIn, User user, Room room}) {
+  AppState copyWith({bool isLoggedIn, User user, Room room, notifications}) {
     return AppState(
         isLoggedIn: isLoggedIn ?? this.isLoggedIn,
         user: user ?? this.user,
-        room: room ?? this.room);
+        room: room ?? this.room,
+        notifications: notifications ?? this.notifications);
   }
 }

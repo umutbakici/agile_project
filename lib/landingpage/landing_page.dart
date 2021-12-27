@@ -96,7 +96,8 @@ class _LandingPageState extends State<LandingPage> {
                                     builder: (context, user) {
                                       return LinearProgressIndicator(
                                         value: user.XP / 300.0,
-                                        backgroundColor: Color.fromRGBO(0, 0, 0, 1),
+                                        backgroundColor:
+                                            Color.fromRGBO(0, 0, 0, 1),
                                       );
                                     },
                                     converter: (store) =>
@@ -143,6 +144,69 @@ class _LandingPageState extends State<LandingPage> {
               ),
             ],
           ),
+          StoreConnector<AppState, List<String>>(
+              builder: (context, nots) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    for (var item in nots)
+                      Card(
+                        color: Colors.white,
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        elevation: 5,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Spacer(flex: 1),
+                                Stack(
+                                  children: [
+                                    Image.network(
+                                      "https://www.pngkit.com/png/detail/30-309466_gold-cup-trophy-png-image-gold-cup-png.png",
+                                      width: 64,
+                                      height: 64,
+                                    ),
+                                    Container(
+                                      color: Colors.black26,
+                                      width: 64,
+                                      height: 64,
+                                    )
+                                  ],
+                                ),
+                                Spacer(flex: 5),
+                                Column(
+                                  children: [
+                                    Center(
+                                        child: Text("Achievement Completed!",
+                                            style: TextStyle(
+                                                color: Color(0xFF00695C),
+                                                fontWeight: FontWeight.bold))),
+                                    SizedBox(height: 16),
+                                    Center(
+                                        child: SizedBox(
+                                            width: 256,
+                                            height: 48,
+                                            child: Expanded(
+                                              child: Text(
+                                                item
+                                                    .replaceAll("_", " ")
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                  color: Color(0xFF263238),
+                                                ),
+                                              ),
+                                            )))
+                                  ],
+                                ),
+                                Spacer(flex: 1),
+                              ],
+                            )),
+                      )
+                  ],
+                );
+              },
+              converter: (store) => store.state.notifications ?? [])
         ],
       ),
     );
