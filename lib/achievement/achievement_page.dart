@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:agile_project/models/user.dart' as au;
+import 'package:agile_project/models/app_state.dart' as aps;
+import 'package:flutter_redux/flutter_redux.dart';
 
 class AchievementScreen extends StatefulWidget {
   const AchievementScreen({Key key}) : super(key: key);
@@ -96,7 +98,69 @@ class _AchievementScreenState extends State<AchievementScreen> {
         ),
         body: Column(children: [
           Expanded(
-            child: ListView.builder(
+            child: StoreConnector<aps.AppState, au.User>(
+                builder: (context, user) {
+                  return ListView(children: <Widget>[
+                    for (var item in user.stats.entries)
+                      Card(
+                        color: Colors.white,
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        elevation: 5,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Spacer(flex: 1),
+                                Stack(
+                                  children: [
+                                    Image.network(
+                                      item.value > 10
+                                          ? "https://www.pngkit.com/png/detail/30-309466_gold-cup-trophy-png-image-gold-cup-png.png"
+                                          : "https://icon-library.com/images/lock-icon/lock-icon-10.jpg",
+                                      width: 64,
+                                      height: 64,
+                                    ),
+                                    Container(
+                                      color: Colors.black26,
+                                      width: 64,
+                                      height: 64,
+                                    )
+                                  ],
+                                ),
+                                Spacer(flex: 5),
+                                Column(
+                                  children: [
+                                    Center(
+                                        child: Text(
+                                            "${item.key.replaceAll("_", " ").toUpperCase()}",
+                                            style: TextStyle(
+                                                color: Color(0xFF00695C),
+                                                fontWeight: FontWeight.bold))),
+                                    SizedBox(height: 16),
+                                    Center(
+                                        child: SizedBox(
+                                            width: 256,
+                                            height: 48,
+                                            child: Expanded(
+                                              child: Text(
+                                                "${item.value > 10 ? 10 * (item.value ~/ 10) : 10 + 10 * (item.value ~/ 10)} ${item.key.replaceAll("_", " ").toUpperCase()}",
+                                                style: TextStyle(
+                                                  color: Color(0xFF263238),
+                                                ),
+                                              ),
+                                            )))
+                                  ],
+                                ),
+                                Spacer(flex: 1),
+                              ],
+                            )),
+                      )
+                  ]);
+                },
+                converter: (store) =>
+                    store.state.user ??
+                    au.User()), /*ListView.builder(
               itemCount: Achievements.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
@@ -152,7 +216,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                       )),
                 );
               },
-            ),
+            ),*/
           )
         ]));
   }

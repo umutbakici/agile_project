@@ -53,6 +53,7 @@ ThunkAction<AppState> incUserStat(String stat, int count) {
 ThunkAction<AppState> achievementCompleted(String name, int count) {
   return (Store<AppState> store) async {
     print("\n\nAchievement $name $count completed!\n\n");
+    store.dispatch(new NotificationAddAction("$count $name"));
   };
 }
 

@@ -9,7 +9,15 @@ final appReducer = combineReducers<AppState>([
   TypedReducer<AppState, UserLoadedAction>(_userLoaded),
   TypedReducer<AppState, RoomUpdatedAction>(_roomUpdated),
   TypedReducer<AppState, TestAction>(_testAction),
+  TypedReducer<AppState, NotificationAddAction>(_notificationAdd),
 ]);
+
+AppState _notificationAdd(AppState as, NotificationAddAction na) {
+  print("Notification Add action");
+  List<String> new_not = new List<String>.from(as.notifications);
+  new_not.add(na.notification);
+  return as.copyWith(notifications: new_not);
+}
 
 AppState _userLoaded(AppState as, UserLoadedAction action) {
   print("Uderloadaction");

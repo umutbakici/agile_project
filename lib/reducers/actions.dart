@@ -16,4 +16,9 @@ class RoomUpdatedAction {
   RoomUpdatedAction(this.room);
 }
 
+class NotificationAddAction {
+  final String notification;
+  NotificationAddAction(this.notification);
+}
+
 class TestAction {}
