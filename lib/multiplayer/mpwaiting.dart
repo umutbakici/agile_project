@@ -1,7 +1,10 @@
+import 'package:agile_project/models/room.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:agile_project/models/app_state.dart';
 import 'package:agile_project/models/user.dart';
+import 'package:agile_project/models/app_state.dart' as aps;
 
 class MPWaitPage extends StatefulWidget {
   @override
@@ -9,8 +12,22 @@ class MPWaitPage extends StatefulWidget {
 }
 
 class _MPWaitPageState extends State<MPWaitPage> {
+  listenRoom(context) async {
+    Stream documentStream = FirebaseFirestore.instance
+        .collection('rooms')
+        .doc(aps.store.state.room.roomID)
+        .snapshots();
+    documentStream.listen((event) {
+      if (event.data()["gameStatus"] == "IN PROGRESS") {
+        Navigator.pushNamed(context, '/mp_questions',
+            arguments: event.data()["category"]);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    listenRoom(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(

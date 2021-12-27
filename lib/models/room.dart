@@ -1,13 +1,19 @@
+import 'dart:typed_data';
+
 class Room {
-  final String roomID;
-  final String gameStatus;
-  final String category;
-  final List<dynamic> players;
-  final int createdAt;
+  String roomID;
+  int guestScore;
+  int hostScore;
+  String gameStatus;
+  String category;
+  List<dynamic> players;
+  int createdAt;
 
   Map<String, dynamic> toMap() {
     return {
       "roomID": roomID,
+      "guestScore": guestScore,
+      "hostScore": hostScore,
       "gameStatus": gameStatus,
       "category": category,
       "players": players,
@@ -17,11 +23,13 @@ class Room {
 
   @override
   String toString() {
-    return 'Room{roomID: $roomID, gameStatus: $gameStatus, category: $category, players:$players, createdAt: $createdAt}';
+    return 'Room{roomID: $roomID, gameStatus: $gameStatus, category: $category, players:$players, createdAt: $hostScore, createdAt: $hostScore, guestScore:$guestScore}';
   }
 
   Room(
       {this.roomID: "",
+      this.guestScore = 0,
+      this.hostScore = 0,
       this.gameStatus: "WAIT",
       this.category: "",
       this.createdAt: 0,
@@ -29,12 +37,16 @@ class Room {
 
   Room copyWith(
       {String roomID,
+      int guestScore,
+      int hostScore,
       String gameStatus,
       String category,
       List<dynamic> players,
       int createdAt}) {
     return Room(
         roomID: roomID ?? this.roomID,
+        guestScore: guestScore ?? this.guestScore,
+        hostScore: hostScore ?? this.hostScore,
         gameStatus: gameStatus ?? this.gameStatus,
         category: category ?? this.category,
         players: players ?? this.players,

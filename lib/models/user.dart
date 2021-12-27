@@ -9,6 +9,8 @@ class User {
   final Map<String, dynamic> inventory;
   final Map<String, dynamic> stats;
   final Map<String, dynamic> jokers;
+  final bool isAdmin;
+
   User(
       {this.username = "",
       this.XP = 0,
@@ -19,11 +21,12 @@ class User {
       this.achievements = const {},
       this.inventory = const {},
       this.jokers = const {},
+      this.isAdmin = false,
       this.stats = const {}});
 
   @override
   String toString() {
-    return 'User{username: $username, XP: $XP, level: $level, mail: $mail, pic_url: $pic_url, inventory: $inventory, stats: $stats, achivements: $achievements, jokers: $jokers}';
+    return 'User{username: $username, XP: $XP, level: $level, mail: $mail, pic_url: $pic_url, inventory: $inventory, stats: $stats, achivements: $achievements, jokers: $jokers, isAdmin: $isAdmin}';
   }
 
   User copyWith(
@@ -36,6 +39,7 @@ class User {
       Map<String, dynamic> achievements,
       Map<String, dynamic> jokers,
       Map<String, dynamic> inventory,
+      bool isAdmin,
       Map<String, dynamic> stats}) {
     return User(
         username: username ?? this.username,
@@ -47,6 +51,7 @@ class User {
         jokers: jokers ?? this.jokers,
         inventory: inventory ?? this.inventory,
         stats: stats ?? this.stats,
+        isAdmin: isAdmin ?? this.isAdmin,
         XP: XP ?? this.XP);
   }
 }

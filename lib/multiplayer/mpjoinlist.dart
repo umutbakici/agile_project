@@ -12,7 +12,7 @@ class MPJoinPage extends StatefulWidget {
 }
 
 class _MPJoinPageState extends State<MPJoinPage> {
-  Future<void> updateRooms() async {
+  Future<void> getRooms() async {
     rooms = await FirebaseFirestore.instance
         .collection('rooms')
         .where("gameStatus", isEqualTo: "WAIT")
@@ -22,9 +22,17 @@ class _MPJoinPageState extends State<MPJoinPage> {
   }
 
   var rooms = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getRooms().then((result) {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    updateRooms();
     return Scaffold(
       appBar: AppBar(
         title: Text(

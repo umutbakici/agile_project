@@ -1,6 +1,7 @@
 import 'package:agile_project/admin_page.dart';
 import 'package:agile_project/landingpage/landing_page.dart';
 import 'package:agile_project/multiplayer/category_screen_mp.dart';
+import 'package:agile_project/multiplayer/mp_questions_page.dart';
 import 'package:agile_project/multiplayer/mpcreatejoin.dart';
 import 'package:agile_project/multiplayer/mpjoinlist.dart';
 import 'package:agile_project/multiplayer/mpwaiting.dart';
@@ -49,7 +50,8 @@ class ReduxApp extends StatelessWidget {
           '/mpcreatejoin': (context) => MPCreateJoinPage(),
           '/categorymp': (context) => CategoryScreenMP(),
           '/waitmp': (context) => MPWaitPage(),
-          '/joinmp': (context) => MPJoinPage()
+          '/joinmp': (context) => MPJoinPage(),
+          '/mp_questions': (context) => MPQuestionsPage()
         },
       ),
     );

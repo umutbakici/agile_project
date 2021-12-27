@@ -79,7 +79,10 @@ ThunkAction<AppState> createRoom(String category) {
           category: event.data()["category"],
           gameStatus: event.data()["gameStatus"],
           players: event.data()["players"],
+          guestScore: event.data()["guestScore"],
+          hostScore: event.data()["hostScore"],
           roomID: event.data()["roomID"]);
+
       store.dispatch(new RoomUpdatedAction(r));
     });
   };
@@ -95,6 +98,8 @@ ThunkAction<AppState> joinRoom(String roomID) {
           category: event.data()["category"],
           gameStatus: event.data()["gameStatus"],
           players: event.data()["players"],
+          guestScore: event.data()["guestScore"],
+          hostScore: event.data()["hostScore"],
           roomID: event.data()["roomID"]);
       store.dispatch(new RoomUpdatedAction(r));
     });
@@ -105,7 +110,6 @@ ThunkAction<AppState> joinRoom(String roomID) {
 }
 
 ThunkAction<AppState> updateRoom(Room r) {
-  store.dispatch(new RoomUpdatedAction(r));
   return (Store<AppState> store) async {
     await FirebaseFirestore.instance
         .collection("rooms")
