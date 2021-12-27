@@ -9,6 +9,7 @@ class User {
   final Map<String, dynamic> inventory;
   final Map<String, dynamic> stats;
   final Map<String, dynamic> jokers;
+  final bool isAdmin;
   User(
       {this.username = "",
       this.XP = 0,
@@ -19,7 +20,8 @@ class User {
       this.achievements = const {},
       this.inventory = const {},
       this.jokers = const {},
-      this.stats = const {}});
+      this.stats = const {},
+      this.isAdmin = false});
 
   @override
   String toString() {
@@ -36,7 +38,8 @@ class User {
       Map<String, dynamic> achievements,
       Map<String, dynamic> jokers,
       Map<String, dynamic> inventory,
-      Map<String, dynamic> stats}) {
+      Map<String, dynamic> stats,
+      bool isAdmin}) {
     return User(
         username: username ?? this.username,
         mail: mail ?? this.mail,
@@ -47,6 +50,7 @@ class User {
         jokers: jokers ?? this.jokers,
         inventory: inventory ?? this.inventory,
         stats: stats ?? this.stats,
-        XP: XP ?? this.XP);
+        XP: XP ?? this.XP,
+        isAdmin: isAdmin ?? this.isAdmin);
   }
 }
