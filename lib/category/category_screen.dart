@@ -23,33 +23,47 @@ class _CategoryScreenState extends State<CategoryScreen> {
   List<Widget> getList() {
     List<Widget> categories = lastCategory
         .map((e) => Column(children: <Widget>[
-              Card(
-                color: Colors.white,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                elevation: 5,
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Spacer(flex: 1),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text(e.toString())],
+              Container(
+                height: 150,
+                color: Colors.lightBlueAccent,
+                child: Row(
+                  children: [
+                    Spacer(
+                      flex: 1,
+                    ),
+                    SizedBox(
+                      height: 64,
+                      width: 128,
+                      child: Text(
+                        e.toString(),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.grey[200],
                         ),
-                        Spacer(flex: 5),
-                        OutlinedButton(
-                            onPressed: () {
-                              Navigator.of(context).pushNamed('/questions',
-                                  arguments: e.toString());
-                              print("clicked ${e.toString()}");
-                            },
-                            child: Text('PLAY',
-                                style: TextStyle(
-                                  color: Color(0xFF80D8FF),
-                                ))),
-                        Spacer(flex: 1),
-                      ],
-                    )),
+                      ),
+                    ),
+                    Spacer(flex: 2),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(16),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed('/questions', arguments: e.toString());
+                        print("clicked ${e.toString()}");
+                      },
+                      icon: Icon(Icons.play_arrow_outlined, size: 20),
+                      label: Text(
+                        "PLAY",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                    Spacer(
+                      flex: 1,
+                    ),
+                  ],
+                ),
               )
             ]))
         .toList();
@@ -80,7 +94,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 icon: Icon(Icons.home)),
           ],
         ),
-        body: Column(children: [
+        body: Scaffold(
+            body: Column(children: [
           StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("questions")
@@ -96,6 +111,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   ));
                 }
               }),
-        ]));
+        ])));
   }
 }

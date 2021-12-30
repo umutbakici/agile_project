@@ -71,8 +71,8 @@ class _AppSettingState extends State<AppSetting> {
                         ),
                         OutlinedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/');
-                            _authService.signOut();
+                            _showLogoutDialog(
+                                "Warning", "Are you sure you want to log out?");
                           },
                           child: Text(
                             'Logout',
@@ -114,6 +114,33 @@ class _AppSettingState extends State<AppSetting> {
           actions: <Widget>[
             new OutlinedButton(
               child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLogoutDialog(String title, String content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            new OutlinedButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+                _authService.signOut();
+              },
+            ),
+            new OutlinedButton(
+              child: new Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
