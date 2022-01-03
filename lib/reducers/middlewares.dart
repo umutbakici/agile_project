@@ -5,6 +5,7 @@ import 'package:agile_project/models/room.dart';
 import 'package:agile_project/reducers/actions.dart';
 import 'package:agile_project/models/user.dart';
 import 'package:agile_project/service/auth.dart';
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -57,13 +58,59 @@ ThunkAction<AppState> achievementCompleted(String name, int count) {
   };
 }
 
+getNumberOfQuestions(String category) {
+  if (category == "geography") {
+    return 20;
+  } else if (category == "celebrities") {
+    return 20;
+  } else if (category == "Entertainment: Video Games") {
+    return 20;
+  } else if (category == "Science & Nature") {
+    return 20;
+  } else if (category == "Art") {
+    return 20;
+  } else if (category == "Entertainment: Board Games") {
+    return 20;
+  } else if (category == "Entertainment: Music") {
+    return 20;
+  } else if (category == "Entertainment: Television") {
+    return 20;
+  } else if (category == "Entertainment: Books") {
+    return 20;
+  } else if (category == "Science: Gadgets") {
+    return 20;
+  } else if (category == "General Knowledge") {
+    return 20;
+  } else if (category == "History") {
+    return 20;
+  } else if (category == "Politics") {
+    return 20;
+  } else if (category == "Entertainment: Film") {
+    return 20;
+  } else if (category == "Entertainment: Japanese Anime & Manga") {
+    return 20;
+  } else {
+    return 10;
+  }
+}
+
 ThunkAction<AppState> createRoom(String category) {
   return (Store<AppState> store) async {
+    var rng = new Random();
+    List questionIds = [];
+    for (var i = 0; i < 10; i++) {
+      int temp = rng.nextInt(getNumberOfQuestions(category));
+      while (questionIds.contains(temp)) {
+        temp = rng.nextInt(getNumberOfQuestions(category));
+      }
+      questionIds.add(temp);
+    }
     var r = Room(
         category: category,
         roomID: getRandomString(15),
         createdAt: DateTime.now().millisecondsSinceEpoch,
-        players: [store.state.user.username]);
+        players: [store.state.user.username],
+        questionIds: questionIds);
     print("$r");
     store.dispatch(new RoomUpdatedAction(r));
     await FirebaseFirestore.instance
@@ -76,13 +123,15 @@ ThunkAction<AppState> createRoom(String category) {
         .snapshots();
     documentStream.listen((event) {
       Room r = Room(
-          createdAt: event.data()["createdAt"],
-          category: event.data()["category"],
-          gameStatus: event.data()["gameStatus"],
-          players: event.data()["players"],
-          guestScore: event.data()["guestScore"],
-          hostScore: event.data()["hostScore"],
-          roomID: event.data()["roomID"]);
+        createdAt: event.data()["createdAt"],
+        category: event.data()["category"],
+        gameStatus: event.data()["gameStatus"],
+        players: event.data()["players"],
+        guestScore: event.data()["guestScore"],
+        hostScore: event.data()["hostScore"],
+        roomID: event.data()["roomID"],
+        questionIds: event.data()["questionIds"],
+      );
 
       store.dispatch(new RoomUpdatedAction(r));
     });
@@ -101,6 +150,7 @@ ThunkAction<AppState> joinRoom(String roomID) {
           players: event.data()["players"],
           guestScore: event.data()["guestScore"],
           hostScore: event.data()["hostScore"],
+          questionIds: event.data()["questionIds"],
           roomID: event.data()["roomID"]);
       store.dispatch(new RoomUpdatedAction(r));
     });

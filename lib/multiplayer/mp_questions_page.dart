@@ -51,107 +51,43 @@ class _QuizPageState extends State<QuizPage> {
 
   void checkAnswer() {
     String correctAnswer = widget.controller.getCorrectAnswer();
+    if (widget.controller.areQuestionsFinished()) {
+      Navigator.pop(context);
+    } else {
+      if (userPickedAnswer == correctAnswer) {
+        gainedGold += 5;
+        String difficulty = widget.controller.getDifficulty();
+        aps.store.dispatch(incUserStat("questions_answered", 1));
 
-    setState(() {
-      if (widget.controller.areQuestionsFinished()) {
-        aps.store.dispatch(incUserStat("quiz_completed", 1));
-        final int xpToAdd =
-            (scoreList.reduce((a, b) => a + b) * 10 * difficultyMultiplier)
-                    .round() +
-                widget.controller.getTime();
-        final int correctCount = scoreList.reduce((a, b) => a + b);
-
-        print(widget.controller.getTime());
-
-        String goldImg =
-            "https://thumbs.dreamstime.com/b/gold-trophy-cup-winner-concept-hand-drawn-vector-illustration-isolated-dark-white-background-189822133.jpg";
-        String silverImg =
-            "https://5.imimg.com/data5/WX/SJ/MY-3175717/silver-trophy-500x500.jpg";
-        String bronzeImg =
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS582ExGF6WVg-aLqv8BNkbL_j_3O_3qtckjQ&usqp=CAU";
-
-        String bronzeText = "Congratulations!\n You answered " +
-            correctCount.toString() +
-            " questions correctly. You are rewarded with 10 gold.";
-
-        String silverText = "Congratulations!\n You answered " +
-            correctCount.toString() +
-            " questions correctly. You are rewarded with 25 gold.";
-
-        String goldText =
-            "Congratulations!\n You answered all questions correctly. You are rewarded with 100 gold.";
-
-        var currentText;
-        var currentImg;
-
-        if (correctCount > 4 && correctCount <= 7) {
-          currentImg = bronzeImg;
-          currentText = bronzeText;
-          gainedGold += 10;
+        aps.store.dispatch(
+            incUserStat("${widget.controller.getCategory()}_answered", 1));
+        switch (difficulty) {
+          case "medium":
+            {
+              difficultyMultiplier += 0.1;
+              aps.store.dispatch(incUserStat("medium_questions_answered", 1));
+            }
+            break;
+          case "hard":
+            {
+              difficultyMultiplier += 0.2;
+              aps.store.dispatch(incUserStat("hard_questions_answered", 1));
+            }
+            break;
+          case "easy":
+            {
+              aps.store.dispatch(incUserStat("easy_questions_answered", 1));
+            }
+            break;
         }
-        if (correctCount > 7) {
-          currentImg = silverImg;
-          currentText = silverText;
-          gainedGold += 25;
-        }
-        if (correctCount == 10) {
-          currentImg = goldImg;
-          currentText = goldText;
-          gainedGold += 100;
-        }
-
-        aps.store.dispatch(addXPGold(xpToAdd, gainedGold));
-        Alert(
-            context: context,
-            image: Image.network(currentImg),
-            content: Text(
-              currentText,
-              textAlign: TextAlign.center,
-            ),
-            buttons: [
-              DialogButton(
-                onPressed: () => Navigator.of(context, rootNavigator: true)
-                    .popAndPushNamed("/leaderboard"),
-                child: Text(
-                  "Cool",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              )
-            ]).show();
-      } else {
-        if (userPickedAnswer == correctAnswer) {
-          gainedGold += 5;
-          String difficulty = widget.controller.getDifficulty();
-          aps.store.dispatch(incUserStat("questions_answered", 1));
-
-          aps.store.dispatch(
-              incUserStat("${widget.controller.getCategory()}_answered", 1));
-          switch (difficulty) {
-            case "medium":
-              {
-                difficultyMultiplier += 0.1;
-                aps.store.dispatch(incUserStat("medium_questions_answered", 1));
-              }
-              break;
-            case "hard":
-              {
-                difficultyMultiplier += 0.2;
-                aps.store.dispatch(incUserStat("hard_questions_answered", 1));
-              }
-              break;
-            case "easy":
-              {
-                aps.store.dispatch(incUserStat("easy_questions_answered", 1));
-              }
-              break;
-          }
-          scoreList.add(1);
+        scoreList.add(1);
+        try {
           widget.controller.increaseMyScore();
-        } else {
-          scoreList.add(0);
-        }
+        } catch (e) {}
+      } else {
+        scoreList.add(0);
       }
-    });
+    }
   }
 
   @override
@@ -198,15 +134,16 @@ class _QuizPageState extends State<QuizPage> {
                       onStart: () {
                         print('Countdown Started');
                       },
-                      onComplete: () {
+                      onComplete: () async {
                         print('Countdown Ended');
+                        checkAnswer();
+                        await Future.delayed(Duration(seconds: 1));
                         showDialog(
                           context: context,
                           builder: (context) {
-                            Future.delayed(Duration(seconds: 3), () {
+                            Future.delayed(Duration(seconds: 2), () {
                               Navigator.of(context).pop(true);
                               widget.controller.reset();
-                              checkAnswer();
                               setState(() {
                                 hasAnswered = false;
                               });
@@ -222,8 +159,11 @@ class _QuizPageState extends State<QuizPage> {
                                     SizedBox(height: 20),
                                     Center(child: Text('Leaderboard')),
                                     SizedBox(height: 20),
-                                    _buildRow(aps.store.state.user.username,
-                                        scoreList.length),
+                                    _buildRow(
+                                        aps.store.state.user.username,
+                                        (scoreList
+                                            .where((e) => e == 1)
+                                            .length)),
                                     _buildRow(
                                       widget.controller.getOtherUsername(),
                                       widget.controller.getOtherUserScore(),

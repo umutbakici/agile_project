@@ -8,6 +8,7 @@ class Room {
   String category;
   List<dynamic> players;
   int createdAt;
+  List<dynamic> questionIds;
 
   Map<String, dynamic> toMap() {
     return {
@@ -18,12 +19,13 @@ class Room {
       "category": category,
       "players": players,
       "createdAt": createdAt,
+      "questionIds": questionIds,
     };
   }
 
   @override
   String toString() {
-    return 'Room{roomID: $roomID, gameStatus: $gameStatus, category: $category, players:$players, createdAt: $hostScore, createdAt: $hostScore, guestScore:$guestScore}';
+    return 'Room{roomID: $roomID, gameStatus: $gameStatus, category: $category, players:$players, createdAt: $hostScore, createdAt: $hostScore, questionIds: $questionIds, guestScore:$guestScore}';
   }
 
   Room(
@@ -33,6 +35,7 @@ class Room {
       this.gameStatus: "WAIT",
       this.category: "",
       this.createdAt: 0,
+      this.questionIds: const [],
       this.players: const []});
 
   Room copyWith(
@@ -42,6 +45,7 @@ class Room {
       String gameStatus,
       String category,
       List<dynamic> players,
+      List<dynamic> questionIds,
       int createdAt}) {
     return Room(
         roomID: roomID ?? this.roomID,
@@ -50,6 +54,7 @@ class Room {
         gameStatus: gameStatus ?? this.gameStatus,
         category: category ?? this.category,
         players: players ?? this.players,
+        questionIds: questionIds ?? this.questionIds,
         createdAt: createdAt ?? this.createdAt);
   }
 }

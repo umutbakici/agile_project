@@ -81,7 +81,8 @@ class _MPJoinPageState extends State<MPJoinPage> {
                       OutlinedButton(
                         onPressed: () {
                           aps.store.dispatch(joinRoom(d["roomID"]));
-                          Navigator.pushNamed(context, '/waitmp');
+                          Navigator.pushNamed(context, '/mp_questions',
+                              arguments: aps.store.state.room.category);
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 22.0),

@@ -63,6 +63,7 @@ class MPQuestionsController extends GetxController {
           .get();
       tempList = collectionSnapshot.docs;
       if (tempList[0]["players"][0] == aps.store.state.user.username) {
+        await Future.delayed(Duration(seconds: 2));
         otherUserName.value = tempList[0]["players"][1];
       } else {
         otherUserName.value = tempList[0]["players"][0];
@@ -81,6 +82,7 @@ class MPQuestionsController extends GetxController {
           .collection("rooms")
           .doc(aps.store.state.room.roomID)
           .set(r.toMap());
+      otherUserScore.value = aps.store.state.room.guestScore;
     } else {
       Room r = aps.store.state.room;
       r.guestScore = r.guestScore + 1;
@@ -88,6 +90,7 @@ class MPQuestionsController extends GetxController {
           .collection("rooms")
           .doc(aps.store.state.room.roomID)
           .set(r.toMap());
+      otherUserScore.value = aps.store.state.room.hostScore;
     }
   }
 
@@ -139,8 +142,8 @@ class MPQuestionsController extends GetxController {
 
   List trimList(oldList) {
     List newList = [];
-    for (var i in chooseRandomElements(oldList)) {
-      newList.add(oldList[i]);
+    for (int i = 0; i < aps.store.state.room.questionIds.length; i++) {
+      newList.add(oldList[aps.store.state.room.questionIds[i]]);
     }
     _questionsList.value = newList;
   }
