@@ -20,7 +20,7 @@ class StoreItem {
 
 List<StoreItem> storeItems = [
   StoreItem(
-      name: "50/50",
+      name: "5050",
       price: 100,
       image:
           'https://tridacmortgages.com/wp-content/uploads/2011/09/5050_logo.png'),

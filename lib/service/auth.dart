@@ -49,9 +49,21 @@ class AuthService {
         "gold": 0,
         "level": 1,
         "XP": 0,
-        "pic_url" : "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/131654569/original/fd45e2a3d3d1643130922e98b0ce921863b6127a/make-you-cartoon-avatar.jpeg",
-        "inventory": {"50/50": 5, "pass": 10, "1":0, "2":0, "3":0, "4":0, "5":0, "6":0
-          , "7":0, "8":0, "9":0},
+        "pic_url":
+            "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/131654569/original/fd45e2a3d3d1643130922e98b0ce921863b6127a/make-you-cartoon-avatar.jpeg",
+        "inventory": {
+          "5050": 5,
+          "pass": 10,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0
+        },
         "stats": {"questions_answered": 0},
         "isAdmin": false,
       });

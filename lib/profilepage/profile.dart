@@ -127,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: <Widget>[
                     StoreConnector<AppState, User>(
                         builder: (context, name) {
-                          return Text(name.inventory['50/50'].toString(),
+                          return Text(name.inventory['5050'].toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -135,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                         converter: (store) => store.state.user ?? User()),
                     Text(
-                      '50/50',
+                      '5050',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
@@ -194,8 +194,8 @@ class _ProfilePageState extends State<ProfilePage> {
               CircleAvatar(
                 radius: profileHeight / 3,
                 backgroundColor: Colors.grey.shade800,
-                backgroundImage:
-                    NetworkImage('https://thumbs.dreamstime.com/b/pass-text-red-grungy-vintage-round-stamp-rubber-205333260.jpg'),
+                backgroundImage: NetworkImage(
+                    'https://thumbs.dreamstime.com/b/pass-text-red-grungy-vintage-round-stamp-rubber-205333260.jpg'),
               ),
             ],
           )
@@ -209,7 +209,6 @@ class _ProfilePageState extends State<ProfilePage> {
               stream: users,
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
-                final data = snapshot.requireData;
                 return Column(
                   children: <Widget>[
                     StoreConnector<AppState, User>(
@@ -293,16 +292,17 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 
-  Widget ProfileImage() => Column(children: [
-                  StoreConnector<AppState, User>(
-                      builder: (context, name) {
-                        return CircleAvatar(
-                          radius: profileHeight / 2,
-                          backgroundColor: Colors.grey.shade800,
-                          backgroundImage:
-                          NetworkImage(name.pic_url.toString()),
-                        );
-                      },
-                      converter: (store) => store.state.user ?? User()),
-                ],);
+  Widget ProfileImage() => Column(
+        children: [
+          StoreConnector<AppState, User>(
+              builder: (context, name) {
+                return CircleAvatar(
+                  radius: profileHeight / 2,
+                  backgroundColor: Colors.grey.shade800,
+                  backgroundImage: NetworkImage(name.pic_url.toString()),
+                );
+              },
+              converter: (store) => store.state.user ?? User()),
+        ],
+      );
 }

@@ -53,7 +53,7 @@ class _StoreListviewState extends State<StoreListview> {
                     if (name.gold > 50) {
                       store.dispatch(addXPGold(0, -50));
                       store.dispatch(setInventoryItemCount(
-                          "50/50", (name.inventory['50/50'] + 1)));
+                          "5050", (name.inventory['5050'] + 1)));
                       print("Bought object");
                     } else {
                       return AlertDialog(
